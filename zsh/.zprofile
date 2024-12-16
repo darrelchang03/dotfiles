@@ -12,7 +12,7 @@ export DOTFILES=$HOME/.dotfiles
 
 addToPathFront $HOME/.local/bin
 addToPathFront $HOME/.local/scripts
-addToPathFront $HOME/.dotfiles/bin/.local/scripts
+# addToPathFront $HOME/.dotfiles/bin/.local/scripts
 
 # Where should I put you?
 bindkey -s ^f "tmux-sessionizer\n"
