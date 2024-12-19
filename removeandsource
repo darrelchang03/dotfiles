@@ -1,0 +1,6 @@
+#!usr/bin/env bash
+rm .bash_logout
+rm .bashrc
+rm .zshrc
+source ~/.dotfiles/zsh/.zprofile
+source ~/.dotfiles/zsh/.zshrc

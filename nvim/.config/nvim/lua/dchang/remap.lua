@@ -27,10 +27,12 @@ vim.keymap.set("x", "<leader>p", [["_dp]])
 -- Remap Y and P to be system clipboard versions of v and p
 vim.keymap.set("n", "Y", '"+y', { noremap = true, silent = true })
 vim.keymap.set("v", "Y", '"+y', { noremap = true, silent = true })
-vim.keymap.set("n", "P", '"+P', { noremap = true, silent = true })
-vim.keymap.set("v", "P", '"+P', { noremap = true, silent = true })
+vim.keymap.set("n", "P", '"+p', { noremap = true, silent = true })
+vim.keymap.set("v", "P", '"+p', { noremap = true, silent = true })
 
 vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+
+vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
 
 -- ehhhh
 vim.keymap.set("i", "<C-c>", "<Esc>")
