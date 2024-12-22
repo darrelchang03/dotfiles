@@ -7,6 +7,7 @@ local yank_group = augroup('HighlightYank', {})
 local autocmd = vim.api.nvim_create_autocmd
 local dchang = augroup('ThePrimeagen', {})
 
+-- Set transparent background color
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
@@ -37,6 +38,8 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
     end
 })
+
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
