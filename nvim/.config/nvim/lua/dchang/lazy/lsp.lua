@@ -33,9 +33,6 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "tailwindcss",
-                "eslint",
-                "lua_ls",
-                "pyright",
             },
             handlers = {
                 function(server_name) -- default handler (optional)

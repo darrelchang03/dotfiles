@@ -71,9 +71,10 @@ vim.keymap.set("n", "<leader>x", function()
 end , { silent = true })
 
 -- edit open to plugin manager. Change to correct file path later
---  vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/theprimeagen/packer.lua<CR>");
+vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/dchang/lazy/<CR>");
 
-vim.keymap.set("n", "<leader><leader>", function()
+vim.keymap.set("n", "<leader>r", function()
     vim.cmd("so")
     alert("Sourced current file", 2000)
 end)
+
