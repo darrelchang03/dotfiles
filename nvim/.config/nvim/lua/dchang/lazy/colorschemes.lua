@@ -6,11 +6,11 @@ function ColorMyPencils(color)
     vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
     vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'NONE' })
-    --    vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'NONE' }) -- Change fg color if needed
-    --    vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'NONE' }) -- Non-current statusline
-    --    vim.api.nvim_set_hl(0, 'TabLine', { bg = 'NONE' })
-    --    vim.api.nvim_set_hl(0, 'TabLineFill', { bg = 'NONE' })
-    --    vim.api.nvim_set_hl(0, 'TabLineSel', { bg = 'NONE' })
+    --  vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'NONE' })
+    --  vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'NONE' })
+    --  vim.api.nvim_set_hl(0, 'TabLine', { bg = 'NONE' })
+    --  vim.api.nvim_set_hl(0, 'TabLineFill', { bg = 'NONE' })
+    --  vim.api.nvim_set_hl(0, 'TabLineSel', { bg = 'NONE' })
     --
     -- vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
     -- vim.api.nvim_set_hl(0, 'Comment', { bg = 'NONE' })
@@ -38,6 +38,15 @@ function ColorMyPencils(color)
 
     -- vim.api.nvim_set_hl(0, 'LineNr', { bg = 'NONE' })
 end
+
+vim.api.nvim_create_user_command(
+    'Color',
+    function(args)
+        local color = args.args ~= "" and args.args or nil
+        ColorMyPencils(color)
+    end,
+    { nargs = "?" } -- Optional argument for the color scheme
+)
 
 return {
     {

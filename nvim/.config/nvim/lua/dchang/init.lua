@@ -5,7 +5,7 @@ require("dchang.lazy_init")
 local augroup = vim.api.nvim_create_augroup
 local yank_group = augroup('HighlightYank', {})
 local autocmd = vim.api.nvim_create_autocmd
-local dchang = augroup('ThePrimeagen', {})
+local dchang = augroup('dchang', {})
 
 autocmd('TextYankPost', {
     group = yank_group,
