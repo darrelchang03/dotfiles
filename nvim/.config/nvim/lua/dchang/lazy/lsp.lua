@@ -33,6 +33,7 @@ return {
             ensure_installed = {
                 "lua_ls",
                 "tailwindcss",
+                "eslint",
             },
             handlers = {
                 function(server_name) -- default handler (optional)
@@ -71,7 +72,19 @@ return {
                         }
                     }
                 end,
-            }
+                ["eslint"] = function()
+                    local lspconfig = require("lspconfig")
+                    lspconfig.eslint.setup({
+                        capabilities = capabilities,
+                        on_attach = function(client, bufnr)
+                            -- Enable formatting if desired
+                            client.server_capabilities.documentFormattingProvider = true
+                            local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+                            buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+                        end,
+                    })
+                end,
+            },
         })
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }

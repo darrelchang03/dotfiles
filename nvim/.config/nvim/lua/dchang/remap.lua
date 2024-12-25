@@ -1,9 +1,9 @@
 -- Define the alert function
 local function alert(message, delay)
-  vim.cmd('echo "' .. message .. '"')
-  vim.defer_fn(function()
-    vim.cmd('echo ""')  -- Clear the message
-  end, delay)  -- Delay in milliseconds
+    vim.cmd('echo "' .. message .. '"')
+    vim.defer_fn(function()
+        vim.cmd('echo ""') -- Clear the message
+    end, delay)            -- Delay in milliseconds
 end
 
 vim.g.mapleader = " "
@@ -25,12 +25,11 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", [["_dp]])
 
 -- Remap Y and P to be system clipboard versions of v and p
-vim.keymap.set("n", "Y", '"+y', { noremap = true, silent = true })
-vim.keymap.set("v", "Y", '"+y', { noremap = true, silent = true })
-vim.keymap.set("n", "P", '"+p', { noremap = true, silent = true })
-vim.keymap.set("v", "P", '"+p', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "Y", '"+y', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "P", '"+p', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "D", '"+d', { noremap = true, silent = true })
 
-vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
 
@@ -68,7 +67,7 @@ vim.keymap.set("n", "<leader>x", function()
         vim.cmd("silent !chmod +x " .. filepath)
         alert("Added execute permissions to current file", 3000)
     end
-end , { silent = true })
+end, { silent = true })
 
 -- edit open to plugin manager. Change to correct file path later
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/dchang/lazy/<CR>");
@@ -77,4 +76,3 @@ vim.keymap.set("n", "<leader>r", function()
     vim.cmd("so")
     alert("Sourced current file", 2000)
 end)
-

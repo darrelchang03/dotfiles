@@ -37,7 +37,7 @@ return {
                             vim.notify(
                                 "File larger than 100KB treesitter disabled for performance",
                                 vim.log.levels.WARN,
-                                {title = "Treesitter"}
+                                { title = "Treesitter" }
                             )
                             return true
                         end
@@ -55,7 +55,7 @@ return {
             treesitter_parser_config.templ = {
                 install_info = {
                     url = "https://github.com/vrischmann/tree-sitter-templ.git",
-                    files = {"src/parser.c", "src/scanner.c"},
+                    files = { "src/parser.c", "src/scanner.c" },
                     branch = "master",
                 },
             }
@@ -71,7 +71,7 @@ return {
                 pairs = {
                     enable = true,
                     highlight_pair_events = { 'CursorMoved' }, -- Highlight pairs on cursor move
-                    highlight_self = true, -- Highlight the opening/closing pair under the cursor
+                    highlight_self = true,                     -- Highlight the opening/closing pair under the cursor
                 },
             })
         end
@@ -83,7 +83,6 @@ return {
         config = function()
             require("nvim-navic").setup({
                 -- Optional: Customize icons or settings
-                --[[
                 icons = {
                     File = "󰈙 ",
                     Module = " ",
@@ -112,7 +111,6 @@ return {
                     Operator = "󰆕 ",
                     TypeParameter = "󰊄 ",
                 },
-                ]]--
                 highlight = true,
                 separator = " > ",
                 depth_limit = 0,
