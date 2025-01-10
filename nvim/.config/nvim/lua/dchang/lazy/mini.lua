@@ -2,7 +2,7 @@ return {
     -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
-    -- MINI SURROUND --
+        -- MINI SURROUND --
         -- Better Around/Inside textobjects
         --
         -- Examples:
@@ -19,41 +19,53 @@ return {
         -- - sr)'  - [S]urround [R]eplace [)] [']
         -- require('mini.surround').setup()
 
-    -- -- MINI STATUSLINE -- 
-    --     local statusline = require 'mini.statusline'
-    --     -- set use_icons to true if you have a Nerd Font
-    --     statusline.setup { use_icons = vim.g.have_nerd_font }
-    --     -- Don't show statusline because this replaces it
-    --     vim.opt.showmode = false
-    --     -- You can configure sections in the statusline by overriding their
-    --     -- default behavior. For example, here we set the section for
-    --     -- cursor location to LINE:COLUMN
-    --     ---@diagnostic disable-next-line: duplicate-set-field
-    --     statusline.section_location = function()
-    --         return '%2l:%-2v'
-    --     end
+        -- -- MINI STATUSLINE --
+        --     local statusline = require 'mini.statusline'
+        --     -- set use_icons to true if you have a Nerd Font
+        --     statusline.setup { use_icons = vim.g.have_nerd_font }
+        --     -- Don't show statusline because this replaces it
+        --     vim.opt.showmode = false
+        --     -- You can configure sections in the statusline by overriding their
+        --     -- default behavior. For example, here we set the section for
+        --     -- cursor location to LINE:COLUMN
+        --     ---@diagnostic disable-next-line: duplicate-set-field
+        --     statusline.section_location = function()
+        --         return '%2l:%-2v'
+        --     end
 
-    -- MINI COMMENT --
+        -- MINI COMMENT --
         require('mini.comment').setup({
-                -- Module mappings. Use `''` (empty string) to disable one.
-                mappings = {
-                    -- Toggle comment (like `gcip` - comment inner paragraph) for both
-                    -- Normal and Visual modes
-                    comment = 'gc',
+            -- Module mappings. Use `''` (empty string) to disable one.
+            mappings = {
+                -- Toggle comment (like `gcip` - comment inner paragraph) for both
+                -- Normal and Visual modes
+                comment = 'gc',
 
-                    -- Toggle comment on current line
-                    comment_line = 'gcc',
+                -- Toggle comment on current line
+                comment_line = 'gcc',
 
-                    -- Toggle comment on visual selection
-                    comment_visual = 'gc',
+                -- Toggle comment on visual selection
+                comment_visual = 'gc',
 
-                    -- Define 'comment' textobject (like `dgc` - delete whole comment block)
-                    -- Works also in Visual mode if mapping differs from `comment_visual`
-                    textobject = 'gc',
-                },
+                -- Define 'comment' textobject (like `dgc` - delete whole comment block)
+                -- Works also in Visual mode if mapping differs from `comment_visual`
+                textobject = 'gc',
+            }
         })
 
+        require('mini.hipatterns').setup({
+            highlighters = {},
+
+            -- Delays (in ms) defining asynchronous highlighting process
+            delay = {
+                -- How much to wait for update after every text change
+                text_change = 200,
+
+                -- How much to wait for update after window scroll
+                scroll = 50,
+            },
+        })
         -- ... and there is more!
         --  Check out: https://github.com/echasnovski/mini.nvim
-    end,
+    end
 }
