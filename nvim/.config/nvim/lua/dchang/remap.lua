@@ -69,7 +69,6 @@ vim.keymap.set("n", "<leader>x", function()
     end
 end, { silent = true })
 
--- edit open to plugin manager. Change to correct file path later
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/dchang/lazy/<CR>");
 
 vim.keymap.set("n", "<leader>r", function()
