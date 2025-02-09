@@ -27,8 +27,12 @@ plugins=(git)
 
 
 # Go Installation
-export GO_INSTALL=$HOME/.local/bin/go/bin
+export GO_INSTALL="$HOME/.local/bin/go/bin"
 export PATH="$GO_INSTALL:$PATH"
+
+# Conda Installation
+export CONDA_INSTALL="$HOME/.local/bin/miniconda3/bin"
+export PATH="$CONDA_INSTALL:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
