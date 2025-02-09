@@ -1,3 +1,9 @@
+addToPathFront() {
+  if [[ ":$PATH:" != *":$1:"* ]]; then
+    export PATH="$1:$PATH"
+  fi
+}
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -19,6 +25,10 @@ source $ZSH/oh-my-zsh.sh
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
+
+# Go Installation
+export GO_INSTALL=$HOME/.local/bin/go/bin
+export PATH="$GO_INSTALL:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
