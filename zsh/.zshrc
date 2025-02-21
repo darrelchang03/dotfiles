@@ -34,6 +34,10 @@ export PATH="$GO_INSTALL:$PATH"
 export CONDA_INSTALL="$HOME/.local/bin/miniconda3/condabin"
 export PATH="$CONDA_INSTALL:$PATH"
 
+# Jupytext for BIGD
+export JUPYTEXT_INSTALL="/home/dchang/.local/bin/miniconda3/envs/BigD/bin/jupytext"
+export PATH="$JUPYTEXT_INSTALL:$PATH"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export NVM_DIR="$HOME/.config/nvm"
