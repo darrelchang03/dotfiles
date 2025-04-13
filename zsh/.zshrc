@@ -4,6 +4,11 @@ addToPathFront() {
   fi
 }
 
+# Start tmux automatically if not already inside a session
+if [[ -z "$TMUX" ]]; then
+    tmux attach || tmux new-session
+fi
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -33,10 +38,6 @@ export PATH="$GO_INSTALL:$PATH"
 # Conda Installation
 export CONDA_INSTALL="$HOME/.local/bin/miniconda3/condabin"
 export PATH="$CONDA_INSTALL:$PATH"
-
-# Jupytext for BIGD
-export JUPYTEXT_INSTALL="/home/dchang/.local/bin/miniconda3/envs/BigD/bin/jupytext"
-export PATH="$JUPYTEXT_INSTALL:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

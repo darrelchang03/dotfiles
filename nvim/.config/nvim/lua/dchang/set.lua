@@ -35,11 +35,11 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "80"
 
 -- Set transparent background for windows and floating windows
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'NONE' })
+-- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+-- vim.api.nvim_set_hl(0, 'NormalNC', { bg = 'NONE' })
 
 -- Thin cursor on insert mode
-vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+-- vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 vim.g.have_nerd_font = true
