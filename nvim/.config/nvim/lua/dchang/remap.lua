@@ -76,23 +76,31 @@ vim.keymap.set("n", "<leader>r", function()
     alert("Sourced current file", 2000)
 end)
 
--- Toggle virtual text only
-local virtual_text_active = true
+_G.show_warnings = false
 
-function _G.toggle_virtual_text()
-  virtual_text_active = not virtual_text_active
-  if virtual_text_active then
+function _G.toggle_warnings()
+  _G.show_warnings = not _G.show_warnings
+  if _G.show_warnings then
     vim.diagnostic.config({
       virtual_text = true,
+      signs = true,
+      underline = true,
     })
-    print("Virtual Text: ON")
+    -- print("Diagnostics: showing warnings")
   else
     vim.diagnostic.config({
-      virtual_text = false,
+      virtual_text = {
+        severity = vim.diagnostic.severity.ERROR,
+      },
+      signs = {
+        -- severity = vim.diagnostic.severity.ERROR,
+      },
+      underline = {
+        -- severity = vim.diagnostic.severity.ERROR,
+      },
     })
-    print("Virtual Text: OFF")
+    -- print("Diagnostics: showing errors only")
   end
 end
 
-vim.keymap.set('n', '<leader>td', toggle_virtual_text, { desc = "Toggle virtual text" })
-
+vim.keymap.set('n', '<space>tw', toggle_warnings, { desc = "Toggle warnings" })

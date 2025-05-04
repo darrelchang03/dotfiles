@@ -6,6 +6,13 @@ return {
         --     -- Don't show statusline because this replaces it
         vim.opt.showmode = false
 
+        local function diagnostics_mode()
+            if _G.show_warnings then
+                return ""  -- icon for "full diagnostics" (you can change this)
+            else
+                return ""  -- icon for "errors only"
+            end
+        end
         require('lualine').setup {
             options = {
                 icons_enabled = true,
@@ -32,8 +39,8 @@ return {
             sections = {
                 lualine_a = { 'mode' },
                 lualine_b = { 'branch', 'diff', 'diagnostics' },
-                lualine_c = { 'filename' },
-                lualine_x = { 'encoding', 'fileformat', 'filetype' },
+                lualine_c = { 'filename'},
+                lualine_x = { diagnostics_mode, 'encoding', 'fileformat', 'filetype' },
                 lualine_y = { 'progress' },
                 lualine_z = { 'location' }
             },
@@ -58,6 +65,8 @@ return {
         -- vim.api.nvim_set_hl(0, 'lualine_x_normal', { bg = 'NONE' })
         -- vim.api.nvim_set_hl(0, 'lualine_y_normal', { bg = 'NONE' })
         -- vim.api.nvim_set_hl(0, 'lualine_z_normal', { bg = 'NONE' })
+
+
     end
 
 }
