@@ -39,7 +39,6 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
-vim.keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>")
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
@@ -76,3 +75,24 @@ vim.keymap.set("n", "<leader>r", function()
     vim.cmd("so")
     alert("Sourced current file", 2000)
 end)
+
+-- Toggle virtual text only
+local virtual_text_active = true
+
+function _G.toggle_virtual_text()
+  virtual_text_active = not virtual_text_active
+  if virtual_text_active then
+    vim.diagnostic.config({
+      virtual_text = true,
+    })
+    print("Virtual Text: ON")
+  else
+    vim.diagnostic.config({
+      virtual_text = false,
+    })
+    print("Virtual Text: OFF")
+  end
+end
+
+vim.keymap.set('n', '<leader>td', toggle_virtual_text, { desc = "Toggle virtual text" })
+
