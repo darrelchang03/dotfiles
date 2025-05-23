@@ -26,7 +26,7 @@ vim.keymap.set("x", "<leader>p", [["_dp]])
 
 -- Remap Y and P to be system clipboard versions of v and p
 vim.keymap.set({ "n", "v" }, "Y", '"+y', { noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "P", '"+p', { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "v" }, "P", '"+p', { noremap = true, silent = true })
 -- vim.keymap.set({ "n", "v" }, "D", '"+d', { noremap = true, silent = true })
 
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
