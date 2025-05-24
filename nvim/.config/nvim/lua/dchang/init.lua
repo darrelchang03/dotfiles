@@ -29,19 +29,22 @@ autocmd('LspAttach', {
             require("nvim-navic").attach(client, e.buf)
             -- Add breadcrumbs to the top of the window with nvin-navic
             vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-            vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE", fg = "#FFFFFF" }) -- Adjust fg as needed
+            vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE", fg = "#FFFFFF" })   -- Adjust fg as needed
             vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE", fg = "#AAAAAA" }) -- Non-current window
         end
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition", buffer = e.buf })
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show hover information", buffer = e.buf })
+        vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol,
+            { desc = "Search workspace symbols", buffer = e.buf })
+        vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float,
+            { desc = "Show diagnostics in a floating window", buffer = e.buf })
+        vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, { desc = "Trigger code action", buffer = e.buf })
+        vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, { desc = "Show references", buffer = e.buf })
+        vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, { desc = "Rename symbol", buffer = e.buf })
+        vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help", buffer = e.buf })
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic", buffer = e.buf })
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic", buffer = e.buf })
 
-        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-        vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-        vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-        vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-        vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+        local opts = { buffer = e.buf }
     end
 })
