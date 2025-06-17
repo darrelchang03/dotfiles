@@ -116,7 +116,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -133,3 +132,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

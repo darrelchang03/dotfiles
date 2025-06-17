@@ -21,15 +21,14 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
-source $ZSH/oh-my-zsh.sh
-
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git fzf-tab)
 
+source $ZSH/oh-my-zsh.sh
 
 # Go Installation
 export GO_INSTALL="$HOME/.local/bin/go/bin"
@@ -39,7 +38,6 @@ export PATH="$GO_INSTALL:$PATH"
 export CONDA_INSTALL="$HOME/.local/bin/miniconda3/condabin"
 export PATH="$CONDA_INSTALL:$PATH"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -60,3 +58,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
