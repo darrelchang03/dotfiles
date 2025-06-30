@@ -13,8 +13,7 @@ return {
             vim.wo.wrap = false
             vim.wo.number = true
             vim.wo.rnu = true
-        end)
-
+        end, { desc = '[Zen Mode]: Toggle zen' })
 
         vim.keymap.set("n", "<leader>zZ", function()
             require("zen-mode").setup {
@@ -28,6 +27,6 @@ return {
             vim.wo.number = false
             vim.wo.rnu = false
             vim.opt.colorcolumn = "0"
-        end)
+        end, { desc = '[Zen Mode]: Toggle extreme zen' })
     end
 }
