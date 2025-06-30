@@ -7,7 +7,7 @@ local function alert(message, delay)
 end
 
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Go to vim netrw file expolorer' })
 
 -- Moves lines easier
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -25,29 +25,28 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", [["_dp]])
 
 -- Remap Y and P to be system clipboard versions of v and p
-vim.keymap.set({ "n", "v" }, "Y", '"+y', { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "Y", '"+y', { noremap = true, silent = true, desc = 'Copy to system clipboard'})
 -- vim.keymap.set({ "n", "v" }, "P", '"+p', { noremap = true, silent = true })
 -- vim.keymap.set({ "n", "v" }, "D", '"+d', { noremap = true, silent = true })
 
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = 'Delete without changing delete buffer'})
 
-vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>");
+vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = 'Make it rain' });
 
--- ehhhh
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { desc = 'Tmux sessionizer' })
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = 'Format using lsp' })
 
-vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>zz", { desc = 'Go next in quick fix list' })
+vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>zz", { desc = 'Go back/prev in quick fix list' })
 
-vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz")
+vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz", { desc = 'Go next in location list' })
+vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz", { desc = 'Go back/prev in quick fix list' })
 
 -- substitute current word
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Substitute word under cursor' })
 
 -- Toggle execute permissions
 vim.keymap.set("n", "<leader>x", function()
@@ -67,14 +66,14 @@ vim.keymap.set("n", "<leader>x", function()
         vim.cmd("silent !chmod +x " .. filepath)
         alert("Added execute permissions to current file", 3000)
     end
-end, { silent = true })
+end, { silent = true, desc = 'Add execute permissions to current file'})
 
-vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/dchang/lazy/<CR>");
+vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/dchang/lazy/<CR>", { desc = 'Go to vim config files' });
 
 vim.keymap.set("n", "<leader>r", function()
     vim.cmd("so")
     alert("Sourced current file", 2000)
-end)
+end, { desc = 'Source current file' })
 
 _G.show_warnings = false
 
