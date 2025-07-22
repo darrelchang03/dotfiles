@@ -30,4 +30,3 @@ reload_zsh_config() {
 
 zle -N reload_zsh_config
 bindkey '^Zr' reload_zsh_config
-

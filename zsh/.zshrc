@@ -60,3 +60,6 @@ unset __conda_setup
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# For linux gui apps to have a dbus
+eval "$(dbus-launch --sh-syntax --exit-with-session)"
