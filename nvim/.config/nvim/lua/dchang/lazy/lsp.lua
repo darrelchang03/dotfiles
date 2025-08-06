@@ -36,7 +36,10 @@ return {
                 "lua_ls",
                 "tailwindcss",
                 "eslint",
+                "pyright",
             },
+            ---@type boolean | string[] | { exclude: string[] }
+            automatic_enable = false,
             handlers = {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup {
