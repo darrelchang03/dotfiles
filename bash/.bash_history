@@ -37,3 +37,4 @@ ls
 bash run
 grep --version
 bash run
+exit
