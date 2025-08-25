@@ -1,35 +1,12 @@
-addToPathFront() {
-  local dir="$1"
-  [[ -d "$dir" ]] || return
-  path=("$dir" $path)
-  typeset -U path
-}
-export PATH
+# =========================
+# Zsh login profile (.zprofile)
+# Keep minimal; no PATH edits, aliases, or zle here.
+# =========================
 
-export XDG_CONFIG_HOME=$HOME/.config
-VIM="nvim"
+export XDG_CONFIG_HOME="$HOME/.config"
 
-export GIT_EDITOR=$VIM
-export DOTFILES=$HOME/.dotfiles
+export EDITOR="nvim"
+export VISUAL="nvim"
+export GIT_EDITOR="$VIM"
+export DOTFILES="$HOME/.dotfiles"
 
-addToPathFront $HOME/.local/bin
-addToPathFront $HOME/.local/scripts
-addToPathFront $HOME/.local/bin/go
-addToPathFront $HOME/.local/bin/miniconda3/condabin
-
-# Where should I put you?
-bindkey -s ^f "tmux-sessionizer\n"
-
-alias vim="nvim"
-alias grep="rg"
-
-# Function to reload .zshrc and .zprofile
-reload_zsh_config() {
-    source ~/.zshrc
-    source ~/.zprofile
-    echo "Reloaded ~/.zshrc and ~/.zprofile\r"
-    zle accept-line
-}
-
-zle -N reload_zsh_config
-bindkey '^Zr' reload_zsh_config
