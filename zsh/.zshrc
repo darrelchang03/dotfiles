@@ -5,6 +5,9 @@ path=(
   /usr/lib/wsl/lib $HOME/.local/bin $HOME/.local/scripts $HOME/bin
 )
 
+autoload -U bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
+
 # --------------- Functions -----------------
 addToPathFront() {
     local d
@@ -27,9 +30,9 @@ addToPathFront $HOME/.local/bin/miniconda3/condabin
 addToPathFront $HOME/.local/bin/go/bin
 
 # --------------- Keybinds -----------------
-    bindkey -s ^f "tmux-sessionizer\n"
-    zle -N reload_zsh_config
-    bindkey '^Zr' reload_zsh_config
+bindkey -s ^f "tmux-sessionizer\n"
+zle -N reload_zsh_config
+bindkey '^Zr' reload_zsh_config
 
 # --------------- Aliases -----------------
 alias vim="nvim"
@@ -47,7 +50,7 @@ export NVM_DIR="$HOME/.config/nvm"
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="robbyrussell"
-plugins=(git fzf-tab)
+plugins=(git)
 source "$ZSH/oh-my-zsh.sh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -62,24 +65,24 @@ if [[ -z "$TMUX" ]]; then
 fi
 
 # For linux gui apps to have a dbus
-if [[ $- == *i* ]] && command -v dbus-launch >/dev/null 2>&1; then
-    eval "$(dbus-launch --sh-syntax --exit-with-session)"
-fi
+#if [[ $- == *i* ]] && command -v dbus-launch >/dev/null 2>&1; then
+#    eval "$(dbus-launch --sh-syntax --exit-with-session)"
+#fi
 
 # Keep only entries that are dirs or symlinks to dirs
-_clean=()
-for d in $path; do
-  [[ -d $d || -L $d ]] && _clean+=$d
-done
-
-# Ensure core dirs exist and are first (keep order stable)
-_must=( /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin )
-for d in $_must; do
-  [[ -d $d || -L $d ]] || continue
-  _clean=(${_clean:#$d})     # remove if present
-  _clean=($d $_clean)        # re-prepend
-done
-
-path=($_clean)
-unset _clean _must
-export PATH="${(j/:/)path}"
+#_clean=()
+#for d in $path; do
+#  [[ -d $d || -L $d ]] && _clean+=$d
+#done
+#
+## Ensure core dirs exist and are first (keep order stable)
+#_must=( /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin )
+#for d in $_must; do
+#  [[ -d $d || -L $d ]] || continue
+#  _clean=(${_clean:#$d})     # remove if present
+#  _clean=($d $_clean)        # re-prepend
+#done
+#
+#path=($_clean)
+#unset _clean _must
+#export PATH="${(j/:/)path}"
