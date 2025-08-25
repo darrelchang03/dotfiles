@@ -1,8 +1,10 @@
 addToPathFront() {
-  if [[ ":$PATH:" != *":$1:"* ]]; then
-    export PATH="$1:$PATH"
-  fi
+  local dir="$1"
+  [[ -d "$dir" ]] || return
+  path=("$dir" $path)
+  typeset -U path
 }
+export PATH
 
 export XDG_CONFIG_HOME=$HOME/.config
 VIM="nvim"
@@ -13,6 +15,7 @@ export DOTFILES=$HOME/.dotfiles
 addToPathFront $HOME/.local/bin
 addToPathFront $HOME/.local/scripts
 addToPathFront $HOME/.local/bin/go
+addToPathFront $HOME/.local/bin/miniconda3/condabin
 
 # Where should I put you?
 bindkey -s ^f "tmux-sessionizer\n"
