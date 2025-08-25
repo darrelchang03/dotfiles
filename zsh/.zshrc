@@ -1,8 +1,10 @@
 addToPathFront() {
-  if [[ ":$PATH:" != *":$1:"* ]]; then
-    export PATH="$1:$PATH"
-  fi
+  local dir="$1"
+  [[ -d "$dir" ]] || return
+  path=("$dir" $path)
+  typeset -U path
 }
+export PATH
 
 # Start tmux automatically if not already inside a session
 if [[ -z "$TMUX" ]]; then
@@ -30,15 +32,6 @@ plugins=(git fzf-tab)
 
 source $ZSH/oh-my-zsh.sh
 
-# Go Installation
-export GO_INSTALL="$HOME/.local/bin/go/bin"
-export PATH="$GO_INSTALL:$PATH"
-
-# Conda Installation
-export CONDA_INSTALL="$HOME/.local/bin/miniconda3/condabin"
-export PATH="$CONDA_INSTALL:$PATH"
-
-
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -62,4 +55,7 @@ unset __conda_setup
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # For linux gui apps to have a dbus
-eval "$(dbus-launch --sh-syntax --exit-with-session)"
+# eval "$(dbus-launch --sh-syntax --exit-with-session)"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
