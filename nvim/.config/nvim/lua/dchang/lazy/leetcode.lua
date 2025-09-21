@@ -5,13 +5,14 @@ return {
         -- include a picker of your choice, see picker section for more details
         "nvim-lua/plenary.nvim",
         "MunifTanjim/nui.nvim",
+        "nvim-telescope/telescope.nvim",
     },
     opts = {
         ---@type string
         arg = "leetcode.nvim",
 
         ---@type lc.lang
-        lang = "python",
+        lang = "python3",
 
         cn = { -- leetcode.cn
             enabled = false, ---@type boolean
@@ -68,13 +69,13 @@ return {
         description = {
             position = "left", ---@type lc.position
 
-            width = "40%", ---@type lc.size
+            width = "30%", ---@type lc.size
 
             show_stats = true, ---@type boolean
         },
 
-        ---@type lc.picker
-        picker = { provider = provider },
+        ---@type telescope},lc.picker
+        picker = { provider = telescope},
 
         hooks = {
             ---@type fun()[]
