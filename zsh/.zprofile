@@ -6,6 +6,7 @@
 # Make login shells run .zshrc too
 [[ -r ${ZDOTDIR:-$HOME}/.zshrc ]] && . ${ZDOTDIR:-$HOME}/.zshrc
 
+
 export XDG_CONFIG_HOME="$HOME/.config"
 
 export EDITOR="nvim"
