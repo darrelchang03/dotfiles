@@ -28,6 +28,8 @@ addToPathFront $HOME/.local/bin
 addToPathFront $HOME/.local/scripts
 addToPathFront $HOME/.local/bin/miniconda3/condabin
 addToPathFront $HOME/.local/bin/go/bin
+addToPathFront $HOME/go/bin
+
 
 # --------------- Keybinds -----------------
 bindkey -s ^f "tmux-sessionizer\n"
