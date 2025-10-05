@@ -12,7 +12,6 @@ return {
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
         "j-hui/fidget.nvim",
-        "mlaursen/vim-react-snippets"
     },
 
     config = function()
@@ -28,7 +27,6 @@ return {
             vim.lsp.protocol.make_client_capabilities(),
             cmp_lsp.default_capabilities())
 
-        require("vim-react-snippets").lazy_load()
         require("fidget").setup({})
         require("mason").setup()
         require("mason-lspconfig").setup({
@@ -39,7 +37,7 @@ return {
                 "pyright",
             },
             ---@type boolean | string[] | { exclude: string[] }
-            automatic_enable = false,
+            automatic_installation = {},
             handlers = {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup {
