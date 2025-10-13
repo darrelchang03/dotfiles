@@ -1,2 +1,5 @@
 /nvim/.config/github-copilot/apps.json
 /nvim/.config/ngrok/
+geo.toml
+nvim/.config/go/telemetry/*
+/bash/.bash_history
