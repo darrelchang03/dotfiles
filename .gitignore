@@ -3,3 +3,4 @@
 geo.toml
 nvim/.config/go/telemetry/*
 /bash/.bash_history
+/hyprland/.config/hypr/monitors.conf
