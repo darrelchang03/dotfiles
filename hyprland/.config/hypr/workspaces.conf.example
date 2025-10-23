@@ -24,8 +24,8 @@ unbind = SUPER SHIFT, code:19
 
 # --------------------------------------------------
 # Pin workspace IDs to monitors
-$main="DP-1"
-$second="HDMI-A-1"
+$main=DP-1
+$second=HDMI-A-1
 # Find monitor names with hyprctl monitors
 
 workspace = 1, monitor:$main, name:1
@@ -95,3 +95,6 @@ bindd =  SUPER SHIFT, 6, Move to workspace 6 (secondary), movetoworkspace, 16
 bindd =  SUPER SHIFT, 7, Move to workspace 7 (secondary), movetoworkspace, 17
 bindd =  SUPER SHIFT, 8, Move to workspace 8 (secondary), movetoworkspace, 18
 bindd =  SUPER SHIFT, 9, Move to workspace 9 (secondary), movetoworkspace, 19
+
+exec-once = hyprctl dispatch focusmonitor $second && hyprctl dispatch workspace 11
+exec-once = hyprctl dispatch focusmonitor $main && hyprctl dispatch workspace 1
