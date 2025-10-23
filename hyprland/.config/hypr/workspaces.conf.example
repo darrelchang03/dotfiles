@@ -24,25 +24,29 @@ unbind = SUPER SHIFT, code:19
 
 # --------------------------------------------------
 # Pin workspace IDs to monitors
-workspace = 1, monitor:DP-1, name:1
-workspace = 2, monitor:DP-1, name:2
-workspace = 3, monitor:DP-1, name:3
-workspace = 4, monitor:DP-1, name:4
-workspace = 5, monitor:DP-1, name:5
-workspace = 6, monitor:DP-1, name:6
-workspace = 7, monitor:DP-1, name:7
-workspace = 8, monitor:DP-1, name:8
-workspace = 9, monitor:DP-1, name:9
+$main="DP-1"
+$second="HDMI-A-1"
+# Find monitor names with hyprctl monitors
 
-workspace = 11, monitor:HDMI-A-1, name:11
-workspace = 12, monitor:HDMI-A-1, name:12
-workspace = 13, monitor:HDMI-A-1, name:13
-workspace = 14, monitor:HDMI-A-1, name:14
-workspace = 15, monitor:HDMI-A-1, name:15
-workspace = 16, monitor:HDMI-A-1, name:16
-workspace = 17, monitor:HDMI-A-1, name:17
-workspace = 18, monitor:HDMI-A-1, name:18
-workspace = 19, monitor:HDMI-A-1, name:19
+workspace = 1, monitor:$main, name:1
+workspace = 2, monitor:$main, name:2
+workspace = 3, monitor:$main, name:3
+workspace = 4, monitor:$main, name:4
+workspace = 5, monitor:$main, name:5
+workspace = 6, monitor:$main, name:6
+workspace = 7, monitor:$main, name:7
+workspace = 8, monitor:$main, name:8
+workspace = 9, monitor:$main, name:9
+
+workspace = 11, monitor:$second, name:11
+workspace = 12, monitor:$second, name:12
+workspace = 13, monitor:$second, name:13
+workspace = 14, monitor:$second, name:14
+workspace = 15, monitor:$second, name:15
+workspace = 16, monitor:$second, name:16
+workspace = 17, monitor:$second, name:17
+workspace = 18, monitor:$second, name:18
+workspace = 19, monitor:$second, name:19
 
 # --------------------------------------------------
 # DP-1 (main monitor): Workspaces 1–5
