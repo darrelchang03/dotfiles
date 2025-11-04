@@ -33,3 +33,4 @@ tab_title_template          {title}{' :{}:'.format(num_windows) if num_windows >
 
 shell /bin/zsh -l
 
+resize_in_steps = 1
