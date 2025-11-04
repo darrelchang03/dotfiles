@@ -43,7 +43,7 @@ vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>zz", { desc = 'Go next in quick fix 
 vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>zz", { desc = 'Go back/prev in quick fix list' })
 
 vim.keymap.set("n", "<leader>j", "<cmd>lnext<CR>zz", { desc = 'Go next in location list' })
-vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz", { desc = 'Go back/prev in quick fix list' })
+vim.keymap.set("n", "<leader>k", "<cmd>lprev<CR>zz", { desc = 'Go back/prev in location list' })
 
 -- substitute current word
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Substitute word under cursor' })
@@ -70,10 +70,12 @@ end, { silent = true, desc = 'Add execute permissions to current file'})
 
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.dotfiles/nvim/.config/nvim/lua/dchang/lazy/<CR>", { desc = 'Go to vim config files' });
 
+--[[
 vim.keymap.set("n", "<leader>r", function()
     vim.cmd("so")
     alert("Sourced current file", 2000)
 end, { desc = 'Source current file' })
+--]]
 
 _G.show_warnings = false
 
@@ -103,3 +105,15 @@ function _G.toggle_warnings()
 end
 
 vim.keymap.set('n', '<space>tw', toggle_warnings, { desc = "Toggle warnings" })
+
+
+vim.keymap.set("n", "<leader>ip", function()
+  local venv = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX")
+  if venv ~= nil then
+    -- in the form of /home/benlubas/.virtualenvs/VENV_NAME
+    venv = string.match(venv, "/.+/(.+)")
+    vim.cmd(("MoltenInit %s"):format(venv))
+  else
+    vim.cmd("MoltenInit python3")
+  end
+end, { desc = "Initialize Molten for python3", silent = true })

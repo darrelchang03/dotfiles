@@ -66,6 +66,49 @@ if [[ -z "$TMUX" ]]; then
     tmux attach || tmux new-session
 fi
 
+# Virutal environemnt manager
+# -----------------------------------------------------------------------------
+# include following in .bashrc / .bash_profile / .zshrc
+# usage
+# $ mkvenv myvirtualenv # creates venv under ~/.virtualenvs/
+# $ venv myvirtualenv   # activates venv
+# $ deactivate          # deactivates venv
+# $ rmvenv myvirtualenv # removes venv
+
+export VENV_HOME="$HOME/.virtualenvs"
+[[ -d $VENV_HOME ]] || mkdir $VENV_HOME
+
+lsvenv() {
+  ls -1 $VENV_HOME
+}
+
+venv() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please provide venv name to activate"
+    else
+      source "$VENV_HOME/$1/bin/activate"
+  fi
+}
+
+mkvenv() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please provide venv name to create"
+    else
+      python3 -m venv $VENV_HOME/$1
+  fi
+}
+
+rmvenv() {
+  if [ $# -eq 0 ]
+    then
+      echo "Please provide venv name to remove"
+    else
+      rm -r $VENV_HOME/$1
+  fi
+}
+
 # For linux gui apps to have a dbus
 #if [[ $- == *i* ]] && command -v dbus-launch >/dev/null 2>&1; then
 #    eval "$(dbus-launch --sh-syntax --exit-with-session)"
