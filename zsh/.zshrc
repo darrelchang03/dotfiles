@@ -29,6 +29,7 @@ addToPathFront $HOME/.local/scripts
 addToPathFront $HOME/.local/bin/miniconda3/condabin
 addToPathFront $HOME/.local/bin/go/bin
 addToPathFront $HOME/go/bin
+addToPathFront $HOME/.cargo/bin
 
 
 # --------------- Keybinds -----------------

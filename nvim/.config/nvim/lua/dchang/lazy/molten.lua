@@ -13,7 +13,7 @@ return {
             vim.g.molten_auto_open_output = false
             vim.g.molten_enter_output_behavior = "open_and_enter"
             vim.g.molten_output_show_more = true
-            vim.g.molten_virt_text_max_lines = 15
+            vim.g.molten_virt_text_max_lines = 10
             vim.g.molten_tick_rate = 150
             vim.g.molten_output_virt_lines = true
             vim.g.molten_wrap_output = false
@@ -63,11 +63,25 @@ return {
     {
         "3rd/image.nvim", -- display images in kitty terminal
         dependencies = {
-            "vhyrro/luarocks.nvim",
-            priority = 1001,
-            opts = {
-                rocks = { "magick" },
+            {
+                "nvim-treesitter/nvim-treesitter",
+                build = ":TSUpdate",
+                config = function()
+                    require("nvim-treesitter.configs").setup({
+                        ensure_installed = { "markdown" },
+                        highlight = { enable = true },
+                    })
+                end,
             },
+            --[[
+            {
+                "vhyrro/luarocks.nvim",
+                priority = 1001,
+                opts = {
+                    rocks = { "magick" },
+                },
+            },
+            --]]
         },
         config = function()
             require("image").setup({
@@ -86,8 +100,8 @@ return {
                 window_overlap_clear_enabled = true,
                 window_overlap_clear_ft_ignore = { "" },
                 tmux_show_only_in_active_window = true,
+                kitty_method = "normal"
             })
-            require("image").enable()
         end,
     },
     {
