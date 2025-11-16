@@ -7,4 +7,4 @@ nvim/.config/go/telemetry/*
 /hyprland/.config/hypr/input.conf
 /hyprland/.config/hypr/workspaces.conf
 /kitty/.config/kitty/kitty.conf
-
+/personal/
