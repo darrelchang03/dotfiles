@@ -61,11 +61,6 @@ source "$ZSH/oh-my-zsh.sh"
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 
-# Start tmux automatically if not already inside a session
-# DO LAST SO THAT EVERYTHING BEFORE IT RUNS SMOOOTHLY
-if [[ -z "$TMUX" ]]; then
-    tmux attach || tmux new-session
-fi
 
 # Virutal environemnt manager
 # -----------------------------------------------------------------------------
@@ -110,6 +105,10 @@ rmvenv() {
   fi
 }
 
+# For ROCm
+export ROCM_PATH=/opt/rocm
+export HSA_OVERRIDE_GFX_VERSION=11.0.0
+
 # For linux gui apps to have a dbus
 #if [[ $- == *i* ]] && command -v dbus-launch >/dev/null 2>&1; then
 #    eval "$(dbus-launch --sh-syntax --exit-with-session)"
@@ -132,3 +131,9 @@ rmvenv() {
 #path=($_clean)
 #unset _clean _must
 #export PATH="${(j/:/)path}"
+
+# Start tmux automatically if not already inside a session
+# DO LAST SO THAT EVERYTHING BEFORE IT RUNS SMOOOTHLY
+if [[ -z "$TMUX" ]]; then
+    tmux attach || tmux new-session
+fi
