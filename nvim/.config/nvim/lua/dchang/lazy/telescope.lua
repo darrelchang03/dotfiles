@@ -12,24 +12,49 @@ return {
         require('telescope').setup({
             defaults = {
                 file_ignore_patterns = { "node_modules/" },
-            }
+            },
+            pickers = {
+                live_grep = {
+                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    additional_args = function(_)
+                        return { "--hidden" }
+                    end
+                },
+                grep_string = {
+                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    additional_args = function(_)
+                        return { "--hidden" }
+                    end
+                },
+                find_files = {
+                    file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+                    hidden = true
+                }
+
+            },
         })
 
         local builtin = require('telescope.builtin')
         vim.keymap.set('n', '<leader>pf', builtin.find_files, { desc = 'Telescope search files' })
+
         vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = 'Telescope search git files' })
+
         vim.keymap.set('n', '<leader>pws', function()
             local word = vim.fn.expand("<cword>")
             builtin.grep_string({ search = word })
         end, { desc = 'Telescope [w]ord [s]earch' })
+
         vim.keymap.set('n', '<leader>pWs', function()
             local word = vim.fn.expand("<cWORD>")
             builtin.grep_string({ search = word })
         end, { desc = 'Telescope big [W]ord [s]earch' })
+
         vim.keymap.set('n', '<leader>ps', function()
-            builtin.grep_string({ search = vim.fn.input("Grep > ") })
+            builtin.live_grep()
         end, { desc = 'Telescope Grep [p]roject [s]earch for word' })
+
         vim.keymap.set('n', '<leader>vh', builtin.help_tags, { desc = 'Telescope search [v]im [h]elp tags' })
+
         vim.keymap.set('n', '<leader>vk', builtin.keymaps, { desc = 'Telescope search [v]im [k]eymaps' })
 
         vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
