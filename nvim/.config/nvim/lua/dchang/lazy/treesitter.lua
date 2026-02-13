@@ -43,7 +43,7 @@ return {
                             return true
                         end
                     end,
-                    ]]--
+                    ]] --
 
                     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
                     -- Set this to `true` if you depend on "syntax" being enabled (like for indentation).
@@ -113,7 +113,28 @@ return {
             })
         end
     },
-
+    {
+        'windwp/nvim-ts-autotag',
+        config = function()
+            require('nvim-ts-autotag').setup({
+                -- Optional configurations can be added here
+            })
+        end,
+    },
+    {
+        'norcalli/nvim-colorizer.lua',
+        config = function()
+            require('colorizer').setup()
+        end
+    },
+    {
+        'windwp/nvim-autopairs',
+        enabled = false,
+        event = "InsertEnter",
+        config = true
+        -- use opts = {} for passing setup options
+        -- this is equivalent to setup({}) function
+    },
     {
         "SmiteshP/nvim-navic",
         dependencies = "neovim/nvim-lspconfig", -- Ensure LSP is available
@@ -155,13 +176,4 @@ return {
             })
         end,
     },
-
-    {
-        'windwp/nvim-ts-autotag',
-        config = function()
-            require('nvim-ts-autotag').setup({
-                -- Optional configurations can be added here
-            })
-        end,
-    }
 }
