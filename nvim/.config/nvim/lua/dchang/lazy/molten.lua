@@ -146,7 +146,6 @@ return {
     },
     {
         "quarto-dev/quarto-nvim",
-        ft = { "quarto", "markdown" },
         dependencies = {
             "nvim-lspconfig",
             "jmbuhr/otter.nvim",
