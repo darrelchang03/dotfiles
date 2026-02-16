@@ -44,7 +44,7 @@ keymap = [
 
 	# Toggle
 	{ on = "<Space>", run = [ "toggle", "arrow 1" ], desc = "Toggle the current selection state" },
-	{ on = "<C-a>",   run = "toggle_all --state=on", desc = "Select all files" },
+	{ on = "<S-a>",   run = "toggle_all --state=on", desc = "Select all files" },
 	{ on = "<C-r>",   run = "toggle_all",            desc = "Invert selection of all files" },
 
 	# Visual mode
@@ -82,8 +82,8 @@ keymap = [
 	{ on = "s",         run = "search --via=fd",             desc = "Search files by name via fd" },
 	{ on = "S",         run = "search --via=rg",             desc = "Search files by content via ripgrep" },
 	{ on = "<C-s>",     run = "escape --search",             desc = "Cancel the ongoing search" },
-	{ on = "z",         run = "plugin fzf",                  desc = "Jump to a file/directory via fzf" },
-	{ on = "Z",         run = "plugin zoxide",               desc = "Jump to a directory via zoxide" },
+	{ on = "Z",         run = "plugin fzf",                  desc = "Jump to a file/directory via fzf" },
+	{ on = "z",         run = "plugin zoxide",               desc = "Jump to a directory via zoxide" },
 
 	# Linemode
 	{ on = [ "m", "s" ], run = "linemode size",        desc = "Linemode: size" },
@@ -125,7 +125,8 @@ keymap = [
 
 	# Goto
 	{ on = [ "g", "h" ],       run = "cd ~",             desc = "Go home" },
-	{ on = [ "g", "c" ],       run = "cd ~/.config",     desc = "Go ~/.config" },
+	{ on = [ "g", "c" ],       run = "cd ~/.dotfiles",     desc = "Go ~/.config" },
+	{ on = [ "g", "C" ],       run = "cd ~/.dotfiles/nvim/.config/nvim/lua/dchang/lazy",     desc = "Go to nvim plugins" },
 	{ on = [ "g", "d" ],       run = "cd ~/Downloads",   desc = "Go ~/Downloads" },
 	{ on = [ "g", "<Space>" ], run = "cd --interactive", desc = "Jump interactively" },
 	{ on = [ "g", "f" ],       run = "follow",           desc = "Follow hovered symlink" },
@@ -371,3 +372,104 @@ keymap = [
 	# Filtering
 	{ on = "f", run = "filter", desc = "Filter help items" },
 ]
+
+# Relative motion plugin
+[[mgr.prepend_keymap]]
+on = [ "1" ]
+run = "plugin relative-motions 1"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "2" ]
+run = "plugin relative-motions 2"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "3" ]
+run = "plugin relative-motions 3"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "4" ]
+run = "plugin relative-motions 4"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "5" ]
+run = "plugin relative-motions 5"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "6" ]
+run = "plugin relative-motions 6"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "7" ]
+run = "plugin relative-motions 7"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "8" ]
+run = "plugin relative-motions 8"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "9" ]
+run = "plugin relative-motions 9"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "10" ]
+run = "plugin relative-motions 10"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "11" ]
+run = "plugin relative-motions 11"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "12" ]
+run = "plugin relative-motions 12"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "13" ]
+run = "plugin relative-motions 13"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "14" ]
+run = "plugin relative-motions 14"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "15" ]
+run = "plugin relative-motions 15"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "16" ]
+run = "plugin relative-motions 16"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "17" ]
+run = "plugin relative-motions 17"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "18" ]
+run = "plugin relative-motions 18"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "19" ]
+run = "plugin relative-motions 19"
+desc = "Move in relative steps"
+
+[[mgr.prepend_keymap]]
+on = [ "20" ]
+run = "plugin relative-motions 20"
+desc = "Move in relative steps"
