@@ -37,6 +37,7 @@ function y() {
 
 
 addToPathFront $HOME/.local/bin
+addToPathFront $HOME/.local/share/omarchy/bin
 addToPathFront $HOME/.local/scripts
 addToPathFront $HOME/.local/bin/miniconda3/condabin
 addToPathFront $HOME/.local/bin/go/bin

@@ -29,7 +29,7 @@ input-field {
     font_family = MonaspiceNe Nerd Font Mono
     font_color = $font_color
 
-    placeholder_text = <span> Enter Password 󰈷 </span>
+    placeholder_text = Enter Password
     check_color = $check_color
     fail_text = <i>$FAIL ($ATTEMPTS)</i>
 
