@@ -8,6 +8,8 @@ path=(
 autoload -U bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
 
+[[ $- == *i* ]] || return
+
 # --------------- Functions -----------------
 addToPathFront() {
     local d
@@ -23,6 +25,16 @@ reload_zsh_config() {
     echo "Reloaded ~/.zshrc and ~/.zprofile\r"
     zle accept-line
 }
+
+# Yazi
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
 
 addToPathFront $HOME/.local/bin
 addToPathFront $HOME/.local/scripts
@@ -132,8 +144,11 @@ export HSA_OVERRIDE_GFX_VERSION=11.0.0
 #unset _clean _must
 #export PATH="${(j/:/)path}"
 
+
 # Start tmux automatically if not already inside a session
 # DO LAST SO THAT EVERYTHING BEFORE IT RUNS SMOOOTHLY
 if [[ -z "$TMUX" ]]; then
     tmux attach || tmux new-session
 fi
+
+eval "$(zoxide init zsh)"
