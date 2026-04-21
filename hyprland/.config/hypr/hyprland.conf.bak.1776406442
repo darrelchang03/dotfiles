@@ -25,5 +25,5 @@ source = ~/.config/hypr/autostart.conf
 source = ~/.config/hypr/workspaces.conf
 
 
-monitor=DP-1,2560x1440@165.00,32x0,1.33
-monitor=HDMI-A-1,disable
+monitor=DP-1,2560x1440@165.00,0x0,1.33
+monitor=HDMI-A-1,1920x1080@60.00,1952x0,1.00

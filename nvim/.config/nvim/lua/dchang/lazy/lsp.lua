@@ -183,13 +183,13 @@ return {
 		vim.diagnostic.config({
 			-- update_in_insert = true,
 			virtual_text = {
-				--severity = vim.diagnostic.severity.ERROR,
+				severity = vim.diagnostic.severity.ERROR,
 			},
 			signs = {
-				--severity = vim.diagnostic.severity.ERROR,
+				severity = vim.diagnostic.severity.ERROR,
 			},
 			underline = {
-				--severity = vim.diagnostic.severity.ERROR,
+				severity = vim.diagnostic.severity.ERROR,
 			},
 			float = {
 				focusable = false,
