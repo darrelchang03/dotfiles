@@ -130,11 +130,11 @@ return {
             "nvim-treesitter/nvim-treesitter",
         },
         opts = {},
-        ft = { "markdown", "quarto" },
-        config = function()
-            local otter = require("otter")
-            otter.activate(languages, completion, diagnostics, tsquery)
-        end,
+        -- ft = { "markdown", "quarto" },
+        -- config = function()
+        --     local otter = require("otter")
+        --     otter.activate(languages, completion, diagnostics, tsquery)
+        -- end,
     },
     {
         "iamcco/markdown-preview.nvim",
@@ -201,5 +201,4 @@ return {
 
     -- Optional: treesitter textobjects for jumping/selecting code blocks in markdown
     -- (Requires nvim-treesitter)
-    { "nvim-treesitter/nvim-treesitter-textobjects" },
 }
