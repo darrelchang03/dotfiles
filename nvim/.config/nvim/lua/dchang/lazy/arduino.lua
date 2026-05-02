@@ -1,5 +1,6 @@
 return {
 	"yuukiflow/Arduino-Nvim",
+    enable = false,
 	dependencies = {
 		"nvim-telescope/telescope.nvim",
 		"neovim/nvim-lspconfig",
