@@ -21,6 +21,27 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+-- Change tabs with leader <number>
+for i = 1, 8 do
+  vim.keymap.set({ "n", "t" }, "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>", {
+    desc = "Go to tab " .. i,
+    silent = true,
+  })
+end
+
+-- Remember the last-used tab
+vim.g.lasttab = 1
+vim.api.nvim_create_autocmd("TabLeave", {
+  callback = function()
+    vim.g.lasttab = vim.fn.tabpagenr()
+  end,
+})
+
+-- Alternate tabs
+vim.keymap.set({ "n", "t" }, "<Leader><Tab>", function()
+  vim.cmd("tabnext" .. vim.g.lasttab)
+end, { desc = "Go to last-used tab", silent = true })
+
 -- paste without losing paste register
 vim.keymap.set("x", "<leader>p", [["_dp]])
 
@@ -87,7 +108,7 @@ function _G.toggle_warnings()
       signs = true,
       underline = true,
     })
-    -- print("Diagnostics: showing warnings")
+    print("Diagnostics: showing warnings")
   else
     vim.diagnostic.config({
       virtual_text = {
@@ -100,7 +121,7 @@ function _G.toggle_warnings()
         -- severity = vim.diagnostic.severity.ERROR,
       },
     })
-    -- print("Diagnostics: showing errors only")
+    print("Diagnostics: showing errors only")
   end
 end
 

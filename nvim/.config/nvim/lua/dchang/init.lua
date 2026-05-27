@@ -42,8 +42,8 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, { desc = "Show references", buffer = e.buf })
         vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, { desc = "Rename symbol", buffer = e.buf })
         vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { desc = "Signature help", buffer = e.buf })
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic", buffer = e.buf })
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic", buffer = e.buf })
+        vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Go to next diagnostic", buffer = e.buf })
+        vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = -1}) end, { desc = "Go to previous diagnostic", buffer = e.buf })
 
         local opts = { buffer = e.buf }
     end
