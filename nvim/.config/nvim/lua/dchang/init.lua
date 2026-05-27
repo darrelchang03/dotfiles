@@ -21,7 +21,6 @@ autocmd('TextYankPost', {
 autocmd('LspAttach', {
     group = dchang,
     callback = function(e)
-        local opts = { buffer = e.buf }
 
         -- Attach `nvim-navic` if the LSP client supports document symbols
         local client = vim.lsp.get_client_by_id(e.data.client_id)
@@ -45,7 +44,6 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Go to next diagnostic", buffer = e.buf })
         vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = -1}) end, { desc = "Go to previous diagnostic", buffer = e.buf })
 
-        local opts = { buffer = e.buf }
     end
 })
 
