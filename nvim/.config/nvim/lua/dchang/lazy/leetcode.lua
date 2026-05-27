@@ -11,7 +11,6 @@ return {
         ---@type string
         arg = "leetcode.nvim",
 
-        ---@type lc.lang
         lang = "python3",
 
         cn = { -- leetcode.cn
@@ -20,7 +19,6 @@ return {
             translate_problems = true, ---@type boolean
         },
 
-        ---@type lc.storage
         storage = {
             home = vim.fn.stdpath("data") .. "/leetcode",
             cache = vim.fn.stdpath("cache") .. "/leetcode",
@@ -34,7 +32,7 @@ return {
         ---@type boolean
         logging = true,
 
-        injector = {}, ---@type table<lc.lang, lc.inject>
+        injector = {},
 
         cache = {
             update_interval = 60 * 60 * 24 * 7, ---@type integer 7 days
@@ -48,40 +46,38 @@ return {
         console = {
             open_on_runcode = true, ---@type boolean
 
-            dir = "row", ---@type lc.direction
+            dir = "row",
 
-            size = { ---@type lc.size
+            size = {
                 width = "90%",
                 height = "75%",
             },
 
             result = {
-                size = "60%", ---@type lc.size
+                size = "60%",
             },
 
             testcase = {
                 virt_text = true, ---@type boolean
 
-                size = "40%", ---@type lc.size
+                size = "40%",
             },
         },
 
         description = {
-            position = "left", ---@type lc.position
+            position = "left",
 
-            width = "30%", ---@type lc.size
+            width = "30%",
 
             show_stats = true, ---@type boolean
         },
 
-        ---@type telescope},lc.picker
-        picker = { provider = telescope},
+        picker = { provider = "telescope"},
 
         hooks = {
             ---@type fun()[]
             ["enter"] = {},
 
-            ---@type fun(question: lc.ui.Question)[]
             ["question_enter"] = {},
 
             ---@type fun()[]
@@ -98,7 +94,6 @@ return {
             focus_result = "L", ---@type string
         },
 
-        ---@type lc.highlights
         theme = {},
 
         ---@type boolean
