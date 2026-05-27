@@ -33,27 +33,27 @@ return {
         })
 
         local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<leader>pf', builtin.find_files, { desc = 'Telescope search files' })
+        vim.keymap.set('n', '<leader>pf', builtin.find_files, { desc = '[Telescope]: search files' })
 
-        vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = 'Telescope search git files' })
+        vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = '[Telescope]: search git files' })
 
         vim.keymap.set('n', '<leader>pws', function()
             local word = vim.fn.expand("<cword>")
             builtin.grep_string({ search = word })
-        end, { desc = 'Telescope [w]ord [s]earch' })
+        end, { desc = '[Telescope]: [w]ord [s]earch' })
 
         vim.keymap.set('n', '<leader>pWs', function()
             local word = vim.fn.expand("<cWORD>")
             builtin.grep_string({ search = word })
-        end, { desc = 'Telescope big [W]ord [s]earch' })
+        end, { desc = '[Telescope]: big [W]ord [s]earch' })
 
         vim.keymap.set('n', '<leader>ps', function()
             builtin.live_grep()
-        end, { desc = 'Telescope Grep [p]roject [s]earch for word' })
+        end, { desc = '[Telescope]: Grep [p]roject [s]earch for word' })
 
-        vim.keymap.set('n', '<leader>vh', builtin.help_tags, { desc = 'Telescope search [v]im [h]elp tags' })
+        vim.keymap.set('n', '<leader>vh', builtin.help_tags, { desc = '[Telescope]: search [v]im [h]elp tags' })
 
-        vim.keymap.set('n', '<leader>vk', builtin.keymaps, { desc = 'Telescope search [v]im [k]eymaps' })
+        vim.keymap.set('n', '<leader>vk', builtin.keymaps, { desc = '[Telescope]: search [v]im [k]eymaps' })
 
         vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "none" })
         vim.api.nvim_set_hl(0, "TelescopeBorder", { bg = "none" })
