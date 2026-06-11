@@ -50,6 +50,17 @@ bindkey -s ^f "tmux-sessionizer.sh\n"
 zle -N reload_zsh_config
 bindkey '^Zr' reload_zsh_config
 
+# kitty remaps Ctrl+1..9 to CSI-u so tmux can use them for window switching.
+# Inside tmux those keys are consumed by tmux and never reach this shell; only
+# at a bare prompt (e.g. after detaching) do they arrive here. Bind them to a
+# no-op so they don't print the raw escape sequence.
+_ctrl_num_noop() { }
+zle -N _ctrl_num_noop
+for _csi in 49 50 51 52 53 54 55 56 57; do
+  bindkey "\e[${_csi};5u" _ctrl_num_noop
+done
+unset _csi
+
 # --------------- Aliases -----------------
 alias vim="nvim"
 alias grep="rg"
