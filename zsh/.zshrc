@@ -46,7 +46,7 @@ addToPathFront $HOME/.cargo/bin
 
 
 # --------------- Keybinds -----------------
-bindkey -s ^f "tmux-sessionizer.sh\n"
+bindkey -s ^f "tmux-sessionizer\n"
 zle -N reload_zsh_config
 bindkey '^Zr' reload_zsh_config
 
