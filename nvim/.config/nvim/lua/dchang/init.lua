@@ -22,15 +22,17 @@ autocmd('LspAttach', {
     group = dchang,
     callback = function(e)
 
-        -- Attach `nvim-navic` if the LSP client supports document symbols
-        local client = vim.lsp.get_client_by_id(e.data.client_id)
-        if client.server_capabilities.documentSymbolProvider then
-            require("nvim-navic").attach(client, e.buf)
-            -- Add breadcrumbs to the top of the window with nvin-navic
-            vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
-            vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE", fg = "#FFFFFF" })   -- Adjust fg as needed
-            vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE", fg = "#AAAAAA" }) -- Non-current window
-        end
+        -- Disabled in favor of nvim-treesitter-context (sticky context lines);
+        -- uncomment (along with the plugin spec in dchang/lazy/treesitter.lua) to switch back
+        -- -- Attach `nvim-navic` if the LSP client supports document symbols
+        -- local client = vim.lsp.get_client_by_id(e.data.client_id)
+        -- if client.server_capabilities.documentSymbolProvider then
+        --     require("nvim-navic").attach(client, e.buf)
+        --     -- Add breadcrumbs to the top of the window with nvin-navic
+        --     vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
+        --     vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE", fg = "#FFFFFF" })   -- Adjust fg as needed
+        --     vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE", fg = "#AAAAAA" }) -- Non-current window
+        -- end
         vim.keymap.set("n", "gd", function()
             vim.lsp.buf.definition({
                 on_list = function(options)
