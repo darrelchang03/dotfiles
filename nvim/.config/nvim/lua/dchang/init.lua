@@ -31,7 +31,20 @@ autocmd('LspAttach', {
             vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE", fg = "#FFFFFF" })   -- Adjust fg as needed
             vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE", fg = "#AAAAAA" }) -- Non-current window
         end
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition", buffer = e.buf })
+        vim.keymap.set("n", "gd", function()
+            vim.lsp.buf.definition({
+                on_list = function(options)
+                    local item = options.items[1]
+                    if not item then return end
+                    -- Open the definition in a split to the right...
+                    vim.cmd("rightbelow vsplit " .. vim.fn.fnameescape(item.filename))
+                    vim.api.nvim_win_set_cursor(0, { item.lnum, math.max(item.col - 1, 0) })
+                    vim.cmd("normal! zz")
+                    -- ...but leave the cursor on the original buffer.
+                    vim.cmd("wincmd p")
+                end,
+            })
+        end, { desc = "Go to definition in a vertical split, keep cursor on original", buffer = e.buf })
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show hover information", buffer = e.buf })
         vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol,
             { desc = "Search workspace symbols", buffer = e.buf })
