@@ -13,6 +13,33 @@ return {
                 return ""  -- icon for "errors only"
             end
         end
+        local function harpoon_files()
+            local ok, harpoon = pcall(require, "harpoon")
+            if not ok then return "" end
+
+            local list = harpoon:list()
+            local total = list:length()
+            if total == 0 then return "" end
+
+            -- item.value is stored relative to cwd, so compare against the
+            -- current buffer's path made relative the same way
+            local current = vim.fn.expand("%:p:.")
+            local parts = {}
+            for i = 1, total do
+                local item = list.items[i]
+                if item and item.value ~= "" then
+                    local name = vim.fn.fnamemodify(item.value, ":t")
+                    if item.value == current then
+                        table.insert(parts, "[" .. i .. ":" .. name .. "]")
+                    else
+                        table.insert(parts, i .. ":" .. name)
+                    end
+                end
+            end
+            if #parts == 0 then return "" end
+            return "󰛢 " .. table.concat(parts, "  ")
+        end
+
         require('lualine').setup {
             options = {
                 icons_enabled = true,
@@ -39,7 +66,7 @@ return {
             sections = {
                 lualine_a = { 'mode' },
                 lualine_b = { 'branch', 'diff', 'diagnostics' },
-                lualine_c = { 'filename'},
+                lualine_c = { 'filename', harpoon_files },
                 lualine_x = { diagnostics_mode, 'encoding', 'fileformat', 'filetype' },
                 lualine_y = { 'progress' },
                 lualine_z = { 'location' }
