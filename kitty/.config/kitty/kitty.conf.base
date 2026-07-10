@@ -3,9 +3,8 @@ include ~/.config/omarchy/current/theme/kitty.conf
 env TERM xterm-256color
 
 # Font
-font_family MonaspiceNe Nerd Font Mono
-bold_italic_font MonaspiceNe Nerd Font Mono
-font_size        18.0
+#font_family MonaspiceNe Nerd Font Mono
+font_size        14.0
 
 # Window
 window_padding_width 14
@@ -33,4 +32,20 @@ tab_title_template          {title}{' :{}:'.format(num_windows) if num_windows >
 
 shell /bin/zsh -l
 
+cursor_blink_interval 0
 resize_in_steps = 1
+mouse_hide_wait 0
+sync_to_monitor yes
+notify_on_cmd_finish invisible
+
+unbind = CONTROL, SHIFT, PLUS
+unbind = CONTROL, SHIFT, MINUS
+map ctrl+plus change_font_size all +1.0
+map ctrl+minus change_font_size all -1.0
+
+# Send Ctrl+number as CSI-u so tmux can bind them to window switching
+map ctrl+1 send_text all \x1b[49;5u
+map ctrl+2 send_text all \x1b[50;5u
+map ctrl+3 send_text all \x1b[51;5u
+map ctrl+4 send_text all \x1b[52;5u
+map ctrl+5 send_text all \x1b[53;5u
