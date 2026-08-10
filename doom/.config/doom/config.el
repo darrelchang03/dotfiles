@@ -36,11 +36,56 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+;; Matches `relativenumber' in the Neovim config.
+(setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+
+;; Match the language servers used in the Neovim config: tailwindcss-language-server
+;; isn't registered with eglot by default, so css/web buffers won't get Tailwind
+;; class completion/hover without this. Requires:
+;;   npm install -g @tailwindcss/language-server
+(after! eglot
+  (add-to-list 'eglot-server-programs
+               '((css-mode css-ts-mode web-mode) . ("tailwindcss-language-server" "--stdio"))))
+
+;; Keep `scrolloff = 8' worth of context around the cursor, like the Neovim config.
+(setq scroll-margin 8)
+
+;; `<C-d>zz' / `<C-u>zz' / `nzzzv' / `Nzzzv' in the Neovim config: recenter the
+;; window after every half-page scroll or search jump so the cursor never ends
+;; up pinned to the top/bottom edge.
+(advice-add #'evil-scroll-up :after (lambda (&rest _) (recenter)))
+(advice-add #'evil-scroll-down :after (lambda (&rest _) (recenter)))
+(advice-add #'evil-search-next :after (lambda (&rest _) (recenter)))
+(advice-add #'evil-search-previous :after (lambda (&rest _) (recenter)))
+
+;; `<M-j>/<M-k> -> cnext/cprev zz' in the Neovim config: recenter after
+;; jumping between diagnostics or xref results. Flymake hooks into
+;; `next-error-function', so `]e'/`[e' (bound to next-error/previous-error)
+;; cover diagnostic navigation too.
+(advice-add #'next-error :after (lambda (&rest _) (recenter)))
+(advice-add #'previous-error :after (lambda (&rest _) (recenter)))
+
+;; `mzJ`z' in the Neovim config: keep the cursor in place when joining lines
+;; instead of jumping to the join point.
+(advice-add #'evil-join :around
+            (lambda (orig-fn &rest args)
+              (let ((marker (point-marker)))
+                (apply orig-fn args)
+                (goto-char marker)
+                (set-marker marker nil))))
+
+;; `colorcolumn = 80' in the Neovim config: a visual guide at column 80.
+(setq-default fill-column 80)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
+;; `updatetime = 50' in the Neovim config: shorten the idle delay before
+;; eldoc and flymake refresh, so hover docs and diagnostics feel snappier.
+(setq eldoc-idle-delay 0.2)
+(setq flymake-no-changes-timeout 0.3)
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
