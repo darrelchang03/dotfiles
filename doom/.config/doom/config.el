@@ -32,24 +32,15 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-dracula)
+;;(setq doom-font ')
 
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-;; Matches `relativenumber' in the Neovim config.
 (setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
-;; Match the language servers used in the Neovim config: tailwindcss-language-server
-;; isn't registered with eglot by default, so css/web buffers won't get Tailwind
-;; class completion/hover without this. Requires:
-;;   npm install -g @tailwindcss/language-server
-(after! eglot
-  (add-to-list 'eglot-server-programs
-               '((css-mode css-ts-mode web-mode) . ("tailwindcss-language-server" "--stdio"))))
 
 ;; Keep `scrolloff = 8' worth of context around the cursor, like the Neovim config.
 (setq scroll-margin 8)
@@ -77,6 +68,37 @@
                 (apply orig-fn args)
                 (goto-char marker)
                 (set-marker marker nil))))
+
+;; `:m \"'>+1<CR>gv=gv\"` / `:m \"'<-2<CR>gv=gv\"` in the Neovim config: move
+;; the lines spanned by the Visual selection down/up by one line, reindent,
+;; and reselect. Uses Evil's own visual type (char/line/block), so this works
+;; the same in visual block mode as in the Neovim mapping.
+(defun dchang/move-visual-selection-lines (direction)
+  "Move the lines spanned by the Visual selection one line up (DIRECTION -1)
+or down (DIRECTION 1), reindent them, and restore the selection."
+  (let* ((type (evil-visual-type))
+         (beg-line (line-number-at-pos (region-beginning)))
+         (end-line (line-number-at-pos (region-end)))
+         (line-count (1+ (- end-line beg-line)))
+         (last-line (line-number-at-pos (point-max))))
+    (when (if (> direction 0)
+              (<= (+ end-line direction) last-line)
+            (>= (+ beg-line direction) 1))
+      (let (text new-beg new-end)
+        (save-excursion
+          (goto-char (point-min))
+          (forward-line (1- beg-line))
+          (setq text (delete-and-extract-region
+                      (point) (progn (forward-line line-count) (point))))
+          (forward-line direction)
+          (setq new-beg (point))
+          (insert text)
+          (setq new-end (point))
+          (indent-region new-beg new-end))
+        (evil-visual-select new-beg (1- new-end) type)))))
+
+(map! :v "J" (cmd! (dchang/move-visual-selection-lines 1))
+      :v "K" (cmd! (dchang/move-visual-selection-lines -1)))
 
 ;; `colorcolumn = 80' in the Neovim config: a visual guide at column 80.
 (setq-default fill-column 80)
