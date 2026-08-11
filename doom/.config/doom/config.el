@@ -33,72 +33,43 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-dracula)
-;;(setq doom-font ')
 
 (setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(after! org
+  (setq org-directory "~/org/"))
 
 
-;; Keep `scrolloff = 8' worth of context around the cursor, like the Neovim config.
 (setq scroll-margin 8)
 
-;; `<C-d>zz' / `<C-u>zz' / `nzzzv' / `Nzzzv' in the Neovim config: recenter the
-;; window after every half-page scroll or search jump so the cursor never ends
-;; up pinned to the top/bottom edge.
-(advice-add #'evil-scroll-up :after (lambda (&rest _) (recenter)))
-(advice-add #'evil-scroll-down :after (lambda (&rest _) (recenter)))
-(advice-add #'evil-search-next :after (lambda (&rest _) (recenter)))
-(advice-add #'evil-search-previous :after (lambda (&rest _) (recenter)))
 
-;; `<M-j>/<M-k> -> cnext/cprev zz' in the Neovim config: recenter after
-;; jumping between diagnostics or xref results. Flymake hooks into
-;; `next-error-function', so `]e'/`[e' (bound to next-error/previous-error)
-;; cover diagnostic navigation too.
+;; Recenter when moving diagnostics
 (advice-add #'next-error :after (lambda (&rest _) (recenter)))
 (advice-add #'previous-error :after (lambda (&rest _) (recenter)))
 
-;; `mzJ`z' in the Neovim config: keep the cursor in place when joining lines
-;; instead of jumping to the join point.
-(advice-add #'evil-join :around
-            (lambda (orig-fn &rest args)
-              (let ((marker (point-marker)))
-                (apply orig-fn args)
-                (goto-char marker)
-                (set-marker marker nil))))
+(after! evil
+  (define-key evil-visual-state-map (kbd "J") 'drag-stuff-down)
+  (define-key evil-visual-state-map (kbd "K") 'drag-stuff-up)
 
-;; `:m \"'>+1<CR>gv=gv\"` / `:m \"'<-2<CR>gv=gv\"` in the Neovim config: move
-;; the lines spanned by the Visual selection down/up by one line, reindent,
-;; and reselect. Uses Evil's own visual type (char/line/block), so this works
-;; the same in visual block mode as in the Neovim mapping.
-(defun dchang/move-visual-selection-lines (direction)
-  "Move the lines spanned by the Visual selection one line up (DIRECTION -1)
-or down (DIRECTION 1), reindent them, and restore the selection."
-  (let* ((type (evil-visual-type))
-         (beg-line (line-number-at-pos (region-beginning)))
-         (end-line (line-number-at-pos (region-end)))
-         (line-count (1+ (- end-line beg-line)))
-         (last-line (line-number-at-pos (point-max))))
-    (when (if (> direction 0)
-              (<= (+ end-line direction) last-line)
-            (>= (+ beg-line direction) 1))
-      (let (text new-beg new-end)
-        (save-excursion
-          (goto-char (point-min))
-          (forward-line (1- beg-line))
-          (setq text (delete-and-extract-region
-                      (point) (progn (forward-line line-count) (point))))
-          (forward-line direction)
-          (setq new-beg (point))
-          (insert text)
-          (setq new-end (point))
-          (indent-region new-beg new-end))
-        (evil-visual-select new-beg (1- new-end) type)))))
+  ;; `mzJ`z' in the Neovim config: keep the cursor in place when joining lines
+  ;; instead of jumping to the join point.
+  (advice-add #'evil-join :around
+              (lambda (orig-fn &rest args)
+                (let ((marker (point-marker)))
+                  (apply orig-fn args)
+                  (goto-char marker)
+                  (set-marker marker nil))))
 
-(map! :v "J" (cmd! (dchang/move-visual-selection-lines 1))
-      :v "K" (cmd! (dchang/move-visual-selection-lines -1)))
+  ;; `<C-d>zz' / `<C-u>zz' / `nzzzv' / `Nzzzv' in the Neovim config: recenter the
+  ;; window after every half-page scroll or search jump so the cursor never ends
+  ;; up pinned to the top/bottom edge.
+  (advice-add #'evil-scroll-up :after (lambda (&rest _) (recenter)))
+  (advice-add #'evil-scroll-down :after (lambda (&rest _) (recenter)))
+  (advice-add #'evil-search-next :after (lambda (&rest _) (recenter)))
+  (advice-add #'evil-search-previous :after (lambda (&rest _) (recenter)))
+  )
 
 ;; `colorcolumn = 80' in the Neovim config: a visual guide at column 80.
 (setq-default fill-column 80)

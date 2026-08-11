@@ -1,5 +1,7 @@
 ;;; $DOOMDIR/packages.el -*- lexical-binding: t; no-byte-compile: t -*-
 
+(package! drag-stuff)
+
 ;; To install a package:
 ;;
 ;;   1. Declare them here in a `package!' statement,
