@@ -32,18 +32,10 @@ return {
         require("mason-lspconfig").setup({
             ensure_installed = {
                 "lua_ls",
-                "tailwindcss-language-server",
                 "eslint",
                 "pyright",
                 "textlsp",
                 "gopls",
-                "pgformatter",
-                "clang-format",
-                "emmet-language-server",
-                "html-lsp",
-                "arduino-language-server",
-                "eslint_d",
-                "eslint_lsp",
             },
             ---@type boolean | string[] | { exclude: string[] }
             automatic_installation = {},

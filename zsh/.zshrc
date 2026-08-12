@@ -44,6 +44,7 @@ addToPathFront $HOME/.local/bin/go/bin
 addToPathFront $HOME/go/bin
 addToPathFront $HOME/.cargo/bin
 addToPathFront $HOME/.config/emacs/bin
+addToPathFront $HOME/.config/emacs/bin/doom
 
 
 # --------------- Keybinds -----------------

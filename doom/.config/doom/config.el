@@ -35,15 +35,24 @@
 (setq doom-theme 'doom-dracula)
 
 (setq display-line-numbers-type 'relative)
+(setq scroll-margin 8)
+
+;; `colorcolumn = 80' in the Neovim config: a visual guide at column 80.
+(setq-default fill-column 80)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
+;; `updatetime = 50' in the Neovim config: shorten the idle delay before
+;; eldoc and flymake refresh, so hover docs and diagnostics feel snappier.
+(setq eldoc-idle-delay 0.2)
+(setq flymake-no-changes-timeout 0.3)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (after! org
   (setq org-directory "~/org/"))
 
-
-(setq scroll-margin 8)
-
+(after! projectile
+  (setq projectile-project-search-path '("~/personal")))
 
 ;; Recenter when moving diagnostics
 (advice-add #'next-error :after (lambda (&rest _) (recenter)))
@@ -70,15 +79,6 @@
   (advice-add #'evil-search-next :after (lambda (&rest _) (recenter)))
   (advice-add #'evil-search-previous :after (lambda (&rest _) (recenter)))
   )
-
-;; `colorcolumn = 80' in the Neovim config: a visual guide at column 80.
-(setq-default fill-column 80)
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-
-;; `updatetime = 50' in the Neovim config: shorten the idle delay before
-;; eldoc and flymake refresh, so hover docs and diagnostics feel snappier.
-(setq eldoc-idle-delay 0.2)
-(setq flymake-no-changes-timeout 0.3)
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
