@@ -50,10 +50,19 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 (setq org-roam-directory (file-truename "~/org/roam/"))
+(setq org-journal-dir "~/org/journal/")
+
+(after! org-noter
+  (setq org-noter-notes-search-path '("~/org/"))
+
+  ;; Auto-highlight the text selected in the PDF when inserting a precise note
+  (setq org-noter-highlight-selected-text t)
+  )
+
 (after! org
-  (setq org-refile-use-outline-path 'file)
+  (setq org-refile-use-outline-path 'file
+        org-refile-allow-creating-parent-nodes 'confirm)
   (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-allow-creating-parent-nodes 'confirm)
 
   (setq my/people-list '("Eric" "Randy" "Nij" "Johnny" "Liam" "Henry" "Matt" "Nate" "Pall" "Nerissa"))
 
