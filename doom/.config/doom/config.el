@@ -48,9 +48,123 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
+(setq org-directory "~/org/")
 (setq org-roam-directory (file-truename "~/org/roam/"))
 (after! org
-  (setq org-directory "~/org/"))
+  (setq org-refile-use-outline-path 'file)
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+
+  (setq my/people-list '("Eric" "Randy" "Nij" "Johnny" "Liam" "Henry" "Matt" "Nate" "Pall" "Nerissa"))
+
+  ;; ---------- MOVIES ------------
+  (add-to-list 'org-capture-templates
+               '("m" "Movie to watchlist" entry
+                 (file "movies.org")
+                 "* TOWATCH %^{Title} %^g"
+                 :empty-lines 1))
+
+  (add-to-list 'org-capture-templates
+               '("M" "Movie watched" entry
+                 (file "movies.org")
+                 "* WATCHED %^{Title} %^g
+:PROPERTIES:
+:DATE_WATCHED: %^u
+:WATCHED_WITH: %(string-join (completing-read-multiple \"Watched with: \" my/people-list) \" \")
+:RATING: %^{Rating}
+:END:
+%?"
+                 :empty-lines 1))
+
+  (defun my/movie-mark-watched ()
+    "Promote the movie at point to WATCHED and prompt for watch data."
+    (interactive)
+    (org-todo "WATCHED")
+    (org-set-property "DATE_WATCHED"
+                      (with-temp-buffer
+                        (org-time-stamp '(16) t)
+                        (buffer-string)))
+    (org-set-property "WATCHED_WITH"
+                      (string-join
+                       (completing-read-multiple "Watched with: " my/people-list) " "))
+    (org-set-property "RATING" (read-string "Rating: ")))
+
+  (map! :after org
+        :map org-mode-map
+        :localleader
+        (:prefix ("SPC" . "custom")
+                 "m" #'my/movie-mark-watched)
+        )
+
+  ;; ---------- BOOKS ------------
+  ;; quick add to "to read"
+  (add-to-list 'org-capture-templates
+               '("b" "Book to read" entry
+                 (file "books.org")
+                 "* TOREAD %^{Title} %^g"
+                 :empty-lines 1))
+
+  ;; full log of a finished book
+  (add-to-list 'org-capture-templates
+               '("B" "Book read" entry
+                 (file "books.org")
+                 "* READ %^{Title} %^g
+:PROPERTIES:
+:AUTHOR: %^{Author}
+:DATE_STARTED: %^u
+:DATE_READ: %^u
+:RATING: %^{Rating}
+:RECOMMENDED_BY: %(string-join (completing-read-multiple \"Recommended by: \" my/people-list) \", \")
+:REREAD: %^{Reread times|0}
+:OPENLIBRARY: [[https://openlibrary.org/isbn/%^{ISBN}][Open Library]]
+:END:
+%?"
+                 :empty-lines 1))
+
+  (defun my/book-mark-reading ()
+    "Promote the book to READING and set DATE_STARTED."
+    (interactive)
+    (org-todo "READING")
+    (org-set-property "DATE_STARTED"
+                      (with-temp-buffer
+                        (org-time-stamp '(16) t)   ; inactive date prompt
+                        (buffer-string))))
+
+  (map! :after org
+        :map org-mode-map
+        :localleader
+        (:prefix ("SPC" . "custom")
+                 "b" #'my/book-mark-reading)
+        )
+
+  ;; --- promote a book to READ, fill in the finish data ---
+  (defun my/book-mark-read ()
+    (interactive)
+    (org-todo "READ")
+    ;; only ask for a start date if one isn't already set
+    (unless (org-entry-get nil "DATE_STARTED")
+      (org-set-property "DATE_STARTED"
+                        (with-temp-buffer
+                          (org-time-stamp '(16) t)
+                          (buffer-string))))
+    (org-set-property "DATE_READ"
+                      (with-temp-buffer
+                        (org-time-stamp '(16) t)
+                        (buffer-string)))
+    (org-set-property "RATING" (read-string "Rating: "))
+    (org-set-property "RECOMMENDED_BY"
+                      (string-join
+                       (completing-read-multiple "Recommended by: " my/people-list) ", "))
+    (org-set-property "REREAD" (read-string "Reread times: " "0")))
+
+  (map! :after org
+        :map org-mode-map
+        :localleader
+        (:prefix ("SPC" . "custom")
+                 "B" #'my/book-mark-read)
+        )
+  )
+
 
 (after! projectile
   (setq projectile-project-search-path '("~/personal")))
