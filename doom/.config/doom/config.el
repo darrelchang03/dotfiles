@@ -50,7 +50,9 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 (setq org-roam-directory (file-truename "~/org/roam/"))
-(setq org-journal-dir "~/org/journal/")
+
+(setq org-journal-dir "~/org/journal/"
+      org-journal-file-format "%Y-%m-%d")
 
 (after! org-noter
   (setq org-noter-notes-search-path '("~/org/"))
