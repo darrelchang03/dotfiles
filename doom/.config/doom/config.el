@@ -100,15 +100,7 @@
                        (completing-read-multiple "Watched with: " my/people-list) " "))
     (org-set-property "RATING" (read-string "Rating: ")))
 
-  (map! :after org
-        :map org-mode-map
-        :localleader
-        (:prefix ("SPC" . "custom")
-                 "m" #'my/movie-mark-watched)
-        )
-
   ;; ---------- BOOKS ------------
-  ;; quick add to "to read"
   (add-to-list 'org-capture-templates
                '("b" "Book to read" entry
                  (file "books.org")
@@ -141,13 +133,6 @@
                         (org-time-stamp '(16) t)   ; inactive date prompt
                         (buffer-string))))
 
-  (map! :after org
-        :map org-mode-map
-        :localleader
-        (:prefix ("SPC" . "custom")
-                 "b" #'my/book-mark-reading)
-        )
-
   ;; --- promote a book to READ, fill in the finish data ---
   (defun my/book-mark-read ()
     (interactive)
@@ -172,8 +157,9 @@
         :map org-mode-map
         :localleader
         (:prefix ("SPC" . "custom")
-                 "B" #'my/book-mark-read)
-        )
+                 "m" #'my/movie-mark-watched
+                 "b" #'my/book-mark-reading
+                 "B" #'my/book-mark-read))
   )
 
 
