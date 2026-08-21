@@ -118,11 +118,29 @@
                '("s" "Super Agenda"
                  ((agenda ""
                           ((org-agenda-span 'day)
-                           ;; Habits are matched first -- they carry a time, so
-                           ;; `:time-grid' would otherwise swallow them. `:order'
-                           ;; is what puts the schedule on top when displayed.
+                           ;; A habit disappears from the agenda the moment it
+                           ;; is marked done -- its repeater reschedules it --
+                           ;; so completed ones are recovered from today's
+                           ;; state-change log entries instead. A list value
+                           ;; turns log mode on and picks the item types in one
+                           ;; go; every log entry that isn't a habit is
+                           ;; discarded below, so nothing else about the block
+                           ;; changes. (`org-agenda-start-with-log-mode' is no
+                           ;; use here: `org-agenda-mode' copies it into
+                           ;; `org-agenda-show-log' once for the whole series,
+                           ;; before these per-block settings are bound.)
+                           (org-agenda-show-log '(state))
+                           ;; Groups are applied in list order; `:order' only
+                           ;; decides where they are displayed. So the log
+                           ;; entries have to be settled before `:habit' (which
+                           ;; matches them too, they are the same headings) and
+                           ;; habits before `:time-grid' (they carry a time).
                            (org-super-agenda-groups
-                            '((:name "Habits"
+                            '((:name "Completed Habits"
+                               :and (:log state :habit t)
+                               :order 3)
+                              (:discard (:log t))
+                              (:name "Habits"
                                :habit t
                                :order 2)
                               (:name "Daily Schedule"
