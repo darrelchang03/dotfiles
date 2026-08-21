@@ -137,6 +137,8 @@ rmvenv() {
 export ROCM_PATH=/opt/rocm
 export HSA_OVERRIDE_GFX_VERSION=11.0.0
 
+export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
+
 # For linux gui apps to have a dbus
 #if [[ $- == *i* ]] && command -v dbus-launch >/dev/null 2>&1; then
 #    eval "$(dbus-launch --sh-syntax --exit-with-session)"
