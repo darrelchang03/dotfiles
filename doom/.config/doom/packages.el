@@ -55,4 +55,3 @@
 ;; (unpin! t)
 
 (package! org-super-agenda)
-(package! olivetti)

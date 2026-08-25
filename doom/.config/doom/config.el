@@ -84,24 +84,12 @@
   ;; line. (Bind into this map instead if you ever want header-only commands.)
   (setq org-super-agenda-header-map (make-sparse-keymap))
 
-  ;; Loaded here rather than at startup: the only thing centered is the agenda.
-  (require 'olivetti)
-
   ;; With the default `auto', tags are right-aligned to the window edge, which
   ;; pads every tagged line out to full width and leaves olivetti nothing to
   ;; center. -1 collapses that padding to a single space during generation;
   ;; `my/org-agenda-center' pushes the tags back out once the agenda's natural
   ;; width is known.
   (setq org-agenda-tags-column -1)
-
-  ;; Doom stretches the habit consistency graph across a fixed fraction of the
-  ;; window and pins it to the right edge, overriding `org-habit-graph-column'
-  ;; buffer-locally on every agenda. That makes habit lines exactly as wide as
-  ;; the window -- so there is nothing left to center -- and, since it measures
-  ;; the window *after* olivetti has added margins, the graph would shrink a
-  ;; little more each redraw. Dropping the hook restores the fixed column set
-  ;; below in `after! org'.
-  (remove-hook 'org-agenda-mode-hook #'+org-habit-resize-graph-h)
 
   ;; Hourly rungs from 7am to 10pm, in place of org's default two-hourly
   ;; 8am-8pm, plus `remove-match' so an hour that already holds a timed entry
@@ -111,30 +99,23 @@
   (setf (nth 0 org-agenda-time-grid) '(daily today require-timed remove-match)
         (nth 1 org-agenda-time-grid) (number-sequence 700 2200 100))
 
+  (defun my/org-agenda-within-days-p (item days)
+    (org-super-agenda--when-with-marker-buffer (org-super-agenda--get-marker item)
+      (let ((cutoff (+ (org-today) days))
+            (scheduled (org-entry-get (point) "SCHEDULED"))
+            (deadline (org-entry-get (point) "DEADLINE")))
+        (or (and scheduled (<= (org-time-string-to-absolute scheduled) cutoff))
+            (and deadline (<= (org-time-string-to-absolute deadline) cutoff))))))
+
   ;; The todo block is restricted to the main sequence's keywords on purpose:
   ;; movies.org and books.org declare their own `#+TODO:' sequences, so a bare
+
   ;; `alltodo' would drag the whole watchlist in here.
   (add-to-list 'org-agenda-custom-commands
                '("s" "Super Agenda"
                  ((agenda ""
                           ((org-agenda-span 'day)
-                           ;; A habit disappears from the agenda the moment it
-                           ;; is marked done -- its repeater reschedules it --
-                           ;; so completed ones are recovered from today's
-                           ;; state-change log entries instead. A list value
-                           ;; turns log mode on and picks the item types in one
-                           ;; go; every log entry that isn't a habit is
-                           ;; discarded below, so nothing else about the block
-                           ;; changes. (`org-agenda-start-with-log-mode' is no
-                           ;; use here: `org-agenda-mode' copies it into
-                           ;; `org-agenda-show-log' once for the whole series,
-                           ;; before these per-block settings are bound.)
                            (org-agenda-show-log '(state))
-                           ;; Groups are applied in list order; `:order' only
-                           ;; decides where they are displayed. So the log
-                           ;; entries have to be settled before `:habit' (which
-                           ;; matches them too, they are the same headings) and
-                           ;; habits before `:time-grid' (they carry a time).
                            (org-super-agenda-groups
                             '((:name "Completed Habits"
                                :and (:log state :habit t)
@@ -145,19 +126,15 @@
                                :order 2)
                               (:name "Daily Schedule"
                                :time-grid t
-                               :order 1)))))
+                               :order 1)
+                              (:name "Today"
+                               :anything t
+                               :order 4)))))
                   (todo "TODO|STRT|PROJ|WAIT|HOLD|LOOP"
                         ((org-agenda-overriding-header "")
-                         ;; A timestamp sort key is what makes org attach the
-                         ;; `ts-date' property the `:date' selectors below read;
-                         ;; with the default strategy every item looks undated.
                          (org-agenda-sorting-strategy
                           '(timestamp-up priority-down category-keep))
                          (org-super-agenda-groups
-                          ;; The `:discard's must stay first -- groups are
-                          ;; applied in list order. Habits are plain TODOs, and
-                          ;; anything dated today is already listed in the
-                          ;; agenda block above; both would be shown twice.
                           '((:discard (:habit t))
                             (:discard (:date today))
                             (:name "Important"
@@ -167,10 +144,14 @@
                              :todo ("STRT" "PROJ")
                              :order 2)
                             (:name "Upcoming"
-                             :date t
+                             ;; Todos/deadlines/scheduled within the next 2
+                             ;; weeks; anything further out (or undated)
+                             ;; falls through to "Eventually" below.
+                             :pred (lambda (item)
+                                     (my/org-agenda-within-days-p item 14))
                              :order 3)
-                            (:name "Eventually"
-                             :anything t
+                            (:name "Unscheduled"
+                             :date nil
                              :order 4))))))))
 
   (add-to-list 'org-agenda-custom-commands
@@ -189,185 +170,8 @@
                           ((org-agenda-overriding-header "Completed This Week")
                            (org-agenda-start-day "-6d")
                            (org-agenda-span 7)
-                           ;; Log mode shows CLOSED-logged entries on the day
-                           ;; they closed; entry-types nil suppresses the
-                           ;; normal scheduled/deadline agenda listing so only
-                           ;; those closed entries remain.
                            (org-agenda-show-log 'closed)
                            (org-agenda-entry-types '())))))))
-
-;; ---------- AGENDA CENTERING ------------
-;; Olivetti centers a buffer by growing the window margins until the text body
-;; is `olivetti-body-width' columns wide, so the agenda has to be narrower than
-;; the window before anything can happen. Left alone it never is: several parts
-;; of it size themselves against the window rather than against their own
-;; content -- right-aligned tags, the block separator rule, and (courtesy of
-;; Doom) the habit consistency graph. Those are pinned to fixed values in
-;; `after! org-agenda' above; what's left is to measure what the agenda
-;; actually needs and hand that to olivetti.
-
-(defvar-local my/org-agenda--fitted-width nil
-  "Content width the agenda in this buffer was last centered on.")
-
-(defun my/org-agenda--window ()
-  "The live window displaying the current agenda buffer, if there is one."
-  (let ((win (get-buffer-window (current-buffer) t)))
-    (and (window-live-p win) win)))
-
-(defun my/org-agenda--available-width (win)
-  "Columns WIN can display, ignoring margins olivetti may already have set."
-  (if (null win)
-      (frame-width)
-    (let ((margins (window-margins win)))
-      (+ (window-width win) (or (car margins) 0) (or (cdr margins) 0)))))
-
-(defun my/org-agenda--measure (win beg end)
-  "Columns spanned by the widest screen line between BEG and END.
-Measured through the display engine when WIN is available, so hidden link
-syntax and the `display' properties org-modern decorates the agenda with
-are counted as they are actually drawn rather than as raw characters. The
-X-LIMIT argument of t lifts the wrap boundary, so an over-long line is
-measured whole instead of being folded back into the window's width."
-  (if win
-      (ceiling (car (window-text-pixel-size win beg end t))
-               (frame-char-width (window-frame win)))
-    (let ((width 0))
-      (save-excursion
-        (goto-char beg)
-        (while (< (point) end)
-          (end-of-line)
-          (setq width (max width (current-column)))
-          (forward-line 1)))
-      width)))
-
-(defun my/org-agenda--align-tags (win target)
-  "Right-align every tag group so that its line ends at column TARGET.
-`org-agenda-align-tags' can't be reused here for two reasons. It counts
-characters, but org-modern draws each tag as a label several columns wider
-than its text, so a char-column alignment overshoots the fitted width. And
-it copies the tag's text properties onto the padding it inserts, which
-picks up the `invisible' property org-modern puts on tag delimiters -- the
-padding then isn't drawn at all and the tags come out ragged. Taking the
-properties from the start of the line instead still keeps the padding
-hidden on entries an agenda filter has hidden, which is what the copying
-is there for."
-  (save-excursion
-    (goto-char (point-min))
-    (while (re-search-forward org-tag-group-re nil t)
-      (let ((props (plist-put (copy-sequence
-                               (text-properties-at (line-beginning-position)))
-                              'face nil)))
-        (goto-char (match-beginning 1))
-        (delete-region (save-excursion (skip-chars-backward " \t") (point))
-                       (point))
-        (insert (org-add-props
-                    (make-string
-                     (max 1 (- target (my/org-agenda--measure
-                                       win (line-beginning-position)
-                                       (line-end-position))))
-                     ?\s)
-                    props))
-        (goto-char (line-end-position))))))
-
-(defun my/org-agenda--erase-separators ()
-  "Blank every block separator rule, returning a marker for each one.
-The rules are full-window-width by construction and would otherwise be the
-widest lines in the buffer; `my/org-agenda--draw-separators' puts them back."
-  (when (characterp org-agenda-block-separator)
-    (let ((re (format "^%s+$"
-                      (regexp-quote (char-to-string org-agenda-block-separator))))
-          markers)
-      (save-excursion
-        (goto-char (point-min))
-        (while (re-search-forward re nil t)
-          (delete-region (match-beginning 0) (match-end 0))
-          (push (point-marker) markers)))
-      markers)))
-
-(defun my/org-agenda--draw-separators (markers width)
-  "Redraw the separator rules at MARKERS, WIDTH columns wide."
-  (dolist (marker markers)
-    (save-excursion
-      (goto-char marker)
-      (insert (make-string width org-agenda-block-separator)))
-    (set-marker marker nil)))
-
-(defun my/org-agenda--apply-width (width)
-  "Give the agenda window a text body WIDTH columns wide."
-  ;; Buffer-local because `olivetti-set-width' would set it globally, and it
-  ;; also announces the new width in the echo area on every single redraw.
-  (setq-local olivetti-body-width width)
-  (if (bound-and-true-p olivetti-mode)
-      (olivetti-set-buffer-windows)
-    (olivetti-mode +1)))
-
-(defun my/org-agenda-center ()
-  "Center the agenda in a column just wide enough for its longest line."
-  (when (derived-mode-p 'org-agenda-mode)
-    (if (buffer-narrowed-p)
-        (my/org-agenda--recenter-line)
-      (my/org-agenda--recenter-buffer))))
-
-(defun my/org-agenda--recenter-buffer ()
-  "Measure the whole agenda and fit the window's text body to it."
-  (let* ((inhibit-read-only t)
-         (win (my/org-agenda--window))
-         (separators (my/org-agenda--erase-separators))
-         (content (my/org-agenda--measure win (point-min) (point-max)))
-         (available (my/org-agenda--available-width win)))
-    (setq my/org-agenda--fitted-width content)
-    ;; Tags are re-aligned to the content width rather than to the body width:
-    ;; aligning them to the body would make the longest line a column wider
-    ;; than it was measured at, and every redraw would hand olivetti a column
-    ;; more than the last.
-    (unless (eq org-agenda-remove-tags t)
-      (my/org-agenda--align-tags win content))
-    ;; One spare column over the content: a terminal frame has no fringe to put
-    ;; the continuation glyph in, so it reserves the last text column and a
-    ;; line filling the body exactly would wrap.
-    (my/org-agenda--apply-width (min (1+ content) available))
-    ;; Olivetti splits the leftover columns evenly between the two margins, so
-    ;; the body it settles on can be a column narrower than the one asked for.
-    ;; Widen until the longest line genuinely fits, or until the margins are
-    ;; gone and the agenda is simply wider than the window can show.
-    (when win
-      (let ((guard 8))
-        (while (and (> guard 0)
-                    (< (window-max-chars-per-line win) content)
-                    (< olivetti-body-width available))
-          (setq guard (1- guard))
-          (my/org-agenda--apply-width (min (1+ olivetti-body-width) available)))))
-    ;; The rules are excluded from the measurement above, so they are free to
-    ;; span the text column without dragging the next redraw wider.
-    (my/org-agenda--draw-separators
-     separators
-     (if win (min content (window-max-chars-per-line win)) content))))
-
-(defun my/org-agenda--recenter-line ()
-  "Bring a single rebuilt agenda line back into the fitted column.
-`org-agenda-change-all-lines' -- which is how marking an entry or a habit
-done redraws it -- calls `org-agenda-finalize' on a buffer narrowed to just
-that line. Measuring there would refit the whole agenda to one line, so
-reuse the width the last full redraw settled on instead."
-  (when my/org-agenda--fitted-width
-    (let* ((inhibit-read-only t)
-           (win (my/org-agenda--window))
-           (target my/org-agenda--fitted-width))
-      (unless (eq org-agenda-remove-tags t)
-        (my/org-agenda--align-tags win target))
-      ;; The rebuilt line can come back wider than the column it has to live
-      ;; in; widen rather than let it wrap. Its tags stay a little short of
-      ;; the others until the next full redraw squares them up.
-      (let ((width (my/org-agenda--measure win (point-min) (point-max))))
-        (when (and win (> width target))
-          (setq my/org-agenda--fitted-width width)
-          (my/org-agenda--apply-width
-           (min (1+ width) (my/org-agenda--available-width win))))))))
-
-;; Depth 90 so this runs after org-modern's agenda finalizer, which decides how
-;; some of the text is displayed and therefore how wide it ends up.
-(add-hook 'org-agenda-finalize-hook #'my/org-agenda-center 90)
-
 
 (after! org
   ;; doom's default (sequence "TODO(t)" "PROJ(p)" "LOOP(r)" "STRT(s)"
