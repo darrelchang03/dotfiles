@@ -171,4 +171,4 @@ fi
 
 eval "$(zoxide init zsh)"
 
-source /opt/ros/humble/setup.bash
+source /opt/ros/humble/setup.zsh
