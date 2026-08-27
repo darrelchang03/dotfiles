@@ -170,3 +170,5 @@ if [[ -z "$TMUX" ]]; then
 fi
 
 eval "$(zoxide init zsh)"
+
+source /opt/ros/humble/setup.bash
