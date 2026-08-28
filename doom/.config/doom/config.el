@@ -36,15 +36,18 @@
 
 (setq display-line-numbers-type 'relative)
 (setq scroll-margin 8)
-
-;; `colorcolumn = 80' in the Neovim config: a visual guide at column 80.
 (setq-default fill-column 80)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
-;; `updatetime = 50' in the Neovim config: shorten the idle delay before
-;; eldoc and flymake refresh, so hover docs and diagnostics feel snappier.
+;; Auto reload file, if external change is detected every 2s
+(global-auto-revert-mode 1)
+(setq auto-revert-interval 2)
+
+;; Shorten idle delay refresh, so hover docs and diagnostics feel snappier.
 (setq eldoc-idle-delay 0.2)
 (setq flymake-no-changes-timeout 0.3)
+;; Auto save buffer when window goes out of focus, to prevent org sync issues
+(focus-autosave-mode 1)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
