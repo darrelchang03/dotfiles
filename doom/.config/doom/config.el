@@ -58,6 +58,62 @@
       org-journal-file-format "%Y-%m-%d.org"
       org-journal-date-format "%A, %B %d %Y")
 
+;; Commit (and push) every save under `org-directory' so notes written on one
+;; machine aren't stranded there. The mode, `gac-automatically-push-p' and
+;; `gac-automatically-add-new-files-p' are all set by ~/org/.dir-locals.el, so
+;; the behaviour travels with the repo; only the machine-wide knobs are here.
+(use-package! git-auto-commit-mode
+  :defer t
+  :init
+  (setq
+   ;; gac shells out to git once per save. `focus-autosave-mode' above saves on
+   ;; every window switch, so without a debounce that's a commit per switch;
+   ;; this folds a burst of saves into one. A commit still pending when a buffer
+   ;; is killed gets flushed by gac's `kill-buffer-hook', so nothing is lost.
+   gac-debounce-interval 60
+   ;; Without this `gac-commit' uses `shell-command', which pops a
+   ;; *Shell Command Output* window on every save.
+   gac-silent-message-p t
+   ;; Also set in .dir-locals.el, but that value alone isn't enough: with a
+   ;; debounce, `gac--after-save' runs from a timer and reads this variable in
+   ;; whatever buffer happens to be current, not the org buffer holding the
+   ;; dir-local binding. The global default is what actually gets consulted.
+   gac-automatically-add-new-files-p t)
+
+  :config
+  ;; gac's `gac-push' fires a bare `git push' and its sentinel only ever
+  ;; `message's the status, so a rejected push scrolls away unnoticed and the
+  ;; commits silently pile up locally. Rebase onto the upstream and retry when
+  ;; that happens, and escalate a genuine failure to a warning that stays put.
+  (defun my/gac-push (buffer)
+    "Push BUFFER's repo, rebasing onto the upstream if the push is rejected."
+    (let* ((dir (file-name-directory (buffer-file-name buffer)))
+           (default-directory dir)
+           (proc (start-process-shell-command
+                  "git-auto-push" "*git-auto-push*"
+                  ;; Only pull when the push is actually rejected, so the common
+                  ;; case stays one round trip and leaves the tree alone.
+                  "git push || (git pull --rebase --autostash && git push)")))
+      (set-process-filter proc #'gac-process-filter)
+      (set-process-sentinel
+       proc
+       (lambda (proc _status)
+         (when (memq (process-status proc) '(exit signal))
+           (let ((code (process-exit-status proc)))
+             (unless (zerop code)
+               (let ((git-dir (expand-file-name
+                               ".git" (or (locate-dominating-file dir ".git") dir))))
+                 (display-warning
+                  'git-auto-commit
+                  (format "Auto-push failed in %s (exit %s).%s See *git-auto-push*."
+                          (abbreviate-file-name dir) code
+                          (if (or (file-exists-p (expand-file-name "rebase-merge" git-dir))
+                                  (file-exists-p (expand-file-name "rebase-apply" git-dir)))
+                              " A rebase is half-finished -- resolve it before saving again."
+                            ""))
+                  :warning)))))))))
+  (advice-add #'gac-push :override #'my/gac-push))
+
 (after! org-noter
   (setq org-noter-notes-search-path '("~/org/"))
   ;; Auto-highlight the text selected in the PDF when inserting a precise note

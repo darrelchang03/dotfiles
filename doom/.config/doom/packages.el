@@ -57,3 +57,4 @@
 (package! org-super-agenda)
 (package! arduino-mode)
 (package! focus-autosave-mode)
+(package! git-auto-commit-mode)
