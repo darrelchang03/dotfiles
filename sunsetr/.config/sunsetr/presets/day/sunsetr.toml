@@ -1,0 +1,7 @@
+# "day" preset — nightlight off.
+# Holds a constant daylight temperature instead of following the geo schedule.
+# Toggle against the base config with: sunsetr preset day | sunsetr preset default
+
+transition_mode = "static" # Ignore sunrise/sunset; hold one value
+static_temp = 6500         # Daylight temperature in Kelvin
+static_gamma = 100         # No gamma reduction
