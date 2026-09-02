@@ -23,3 +23,13 @@ nvim/.config/htop/htop_history
 /kitty/.config/kitty/kitty.conf
 flycheck_config.el
 hyprmoncfg-monitors.lua
+
+# --- Third-party omarchy plugins and themes --------------------------------
+# Independent git clones that live inside this repo (~/.config/omarchy is a
+# symlink into it). They were recorded as bare gitlinks with no .gitmodules,
+# so a fresh clone produced 16 empty directories and no way to populate them.
+# Reinstalled by ~/personal/dev/runs/omarchy-{plugins,themes} instead.
+# tema is not a git clone, so it stays tracked.
+/omarchy/.config/omarchy/plugins/
+/omarchy/.config/omarchy/themes/*
+!/omarchy/.config/omarchy/themes/tema/
