@@ -51,10 +51,6 @@ o.bind("SUPER + SHIFT + T", "Activity", { tui = "btop" })
 hl.unbind("SUPER + SHIFT + S")
 o.bind("SUPER + SHIFT + S", "Configure sunsetr", [[omarchy-launch-tui nvim "$HOME/.config/sunsetr/sunsetr.toml"]])
 
--- Was: Calendar. Copy the selection, then look up its definition.
-hl.unbind("SUPER + SHIFT + C")
-o.bind("SUPER + SHIFT + C", "Define selection", [[sh -c 'wtype -M ctrl -P c -p c -m ctrl && "$HOME/.local/scripts/define.sh"']])
-
 -- Was: Signal. Gaming Mode takes the key, so Signal has no binding left;
 -- give it a free key here if you want one back.
 hl.unbind("SUPER + SHIFT + G")
@@ -73,9 +69,21 @@ o.bind("CTRL + SHIFT + F1", "Hyprmon Just Monitor", [[hyprmon --profile "Just Mo
 o.bind("CTRL + SHIFT + F2", "Hyprmon Just TV", [[hyprmon --profile "Just TV"]])
 o.bind("CTRL + SHIFT + F3", "Hyprmon With TV", [[hyprmon --profile "With TV"]])
 
+-- Kick the Denon back into sync when the TV comes up black. The connector is
+-- pinned on (drm.edid_firmware + video=HDMI-A-1:e), so the GPU never sees the
+-- receiver leave and never re-modesets when it returns; this forces one.
+-- Normally denon-audio-follow does it automatically, but only while the AVR is
+-- reachable on the network.
+o.bind("CTRL + SHIFT + F4", "Denon Re-Modeset", [[denon-audio-follow --bounce]])
+
 -- ---------------------------------------------------------------------------
 -- Forward page up/down to Discord
 -- ---------------------------------------------------------------------------
 
 o.bind("Page_Up", nil, [[$HOME/.dotfiles/bin/.local/scripts/send_to_electron.sh ",page_up" class discord]])
 o.bind("Page_Down", nil, [[$HOME/.dotfiles/bin/.local/scripts/send_to_electron.sh ",page_down" class discord]])
+
+
+o.bind("SUPER + SHIFT + L", "Lock screen explorer", "omarchy-shell lock explore")
+
+o.bind("SUPER + CTRL + D", "Look up selection in dictionary", "omarchy-dictionary-lookup")
