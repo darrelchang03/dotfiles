@@ -90,6 +90,9 @@
       "id": "io.github.sirjul1337.lock-explorer",
       "boot": "theme",
       "design": "poster"
+    },
+    {
+      "id": "bobbynicholas.omaland"
     }
   ],
   "disabledPlugins": [
