@@ -1,11 +1,25 @@
-/nvim/.config/github-copilot/apps.json
+# --- Secrets ---------------------------------------------------------------
+# NOTE: ignoring does nothing to already-tracked files; they must be
+# `git rm --cached`ed first (and purged from history if already pushed).
 /nvim/.config/ngrok/
-geo.toml
-nvim/.config/go/telemetry/*
+/nvim/.config/github-copilot/apps.json
 /bash/.bash_history
-/kitty/.config/kitty/kitty.conf
 /personal/
+
+# --- Location / machine identity -------------------------------------------
+geo.toml
+/nvim/.config/Ultralytics/
+
+# --- Captured app state, not configuration ---------------------------------
+/nvim/.config/GIMP/
+/nvim/.config/xfce4/
+/nvim/.config/wslu/
+/nvim/.config/envman/
+/nvim/.config/nvm
+nvim/.config/go/telemetry/*
 nvim/.config/htop/htop_history
 
-
+# --- Generated / machine-local ---------------------------------------------
+/kitty/.config/kitty/kitty.conf
 flycheck_config.el
+hyprmoncfg-monitors.lua
