@@ -55,6 +55,8 @@
 ;; (unpin! t)
 
 (package! org-super-agenda)
+(package! org-pdftools)
+(package! org-noter-pdftools)
 (package! arduino-mode)
 (package! focus-autosave-mode)
 (package! git-auto-commit-mode)

@@ -115,11 +115,6 @@
                   :warning)))))))))
   (advice-add #'gac-push :override #'my/gac-push))
 
-(after! org-noter
-  (setq org-noter-notes-search-path '("~/org/"))
-  ;; Auto-highlight the text selected in the PDF when inserting a precise note
-  (setq org-noter-highlight-selected-text t))
-
 (defun my/update-org-agenda-files (&rest _)
   (setq org-agenda-files
         (seq-remove
@@ -413,6 +408,17 @@
   (advice-add #'evil-search-previous :after (lambda (&rest _) (recenter)))
   )
 
+(after! org-noter
+  (setq org-noter-notes-search-path '("~/org/notes/")
+        org-noter-auto-save-last-location t
+        org-noter-highlight-selected-text t)
+  (require 'org-noter-pdftools))
+
+(use-package! org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
+
+(use-package! org-noter-pdftools
+  :after org-noter)
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `with-eval-after-load' block, otherwise Doom's defaults may override your

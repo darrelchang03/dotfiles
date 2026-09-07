@@ -59,7 +59,9 @@
           "id": "io.weirdware.blueferry"
         },
         {
-          "id": "io.github.silouanwright.look-elsewhere"
+          "id": "io.github.silouanwright.look-elsewhere",
+          "soundEnabled": true,
+          "soundVolume": 25
         },
         {
           "id": "omaplug"
