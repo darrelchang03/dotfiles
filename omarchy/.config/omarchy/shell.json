@@ -1,8 +1,8 @@
 {
   "version": 1,
   "idle": {
-    "screensaver": 150,
-    "lock": 300
+    "screensaver": 300,
+    "lock": 600
   },
   "bar": {
     "position": "top",
@@ -56,7 +56,7 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "io.weirdware.blueferry"
+          "id": "punktfunk"
         },
         {
           "id": "io.github.silouanwright.look-elsewhere",

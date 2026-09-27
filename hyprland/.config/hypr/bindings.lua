@@ -32,6 +32,7 @@ o.bind("SUPER + D", "Discord", { launch = "discord", focus = "discord" })
 o.bind("SUPER + ALT + T", "Activity", { tui = "btop" })
 o.bind("SUPER + SHIFT + T", "Activity", { tui = "btop" })
 
+o.bind("SUPER + E", "Emacs", { launch = "emacs" })
 -- ---------------------------------------------------------------------------
 -- Web apps
 -- ---------------------------------------------------------------------------

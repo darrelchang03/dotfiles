@@ -363,13 +363,53 @@
                        (completing-read-multiple "Recommended by: " my/people-list) ", "))
     (org-set-property "REREAD" (read-string "Reread times: " "0")))
 
+  ;; ---------- RESTAURANTS ------------
+  (add-to-list 'org-capture-templates
+               '("r" "Restaurant to try" entry
+                 (file "food.org")
+                 "* TOTRY %^{Name} %^g
+:PROPERTIES:
+:LOCATION: %^{Location}
+:END:
+%?"
+                 :empty-lines 1))
+
+  (add-to-list 'org-capture-templates
+               '("R" "Restaurant visited" entry
+                 (file "food.org")
+                 "* VISITED %^{Name} %^g
+:PROPERTIES:
+:LOCATION: %^{Location}
+:DATE_VISITED: %^u
+:WENT_WITH: %(string-join (completing-read-multiple \"Went with: \" my/people-list) \", \")
+:RATING: %^{Rating}
+:END:
+%?"
+                 :empty-lines 1))
+
+  (defun my/restaurant-mark-visited ()
+    "Promote the restaurant at point to VISITED and prompt for visit data."
+    (interactive)
+    (org-todo "VISITED")
+    (unless (org-entry-get nil "LOCATION")
+      (org-set-property "LOCATION" (read-string "Location: ")))
+    (org-set-property "DATE_VISITED"
+                      (with-temp-buffer
+                        (org-time-stamp '(16) t)
+                        (buffer-string)))
+    (org-set-property "WENT_WITH"
+                      (string-join
+                       (completing-read-multiple "Went with: " my/people-list) ", "))
+    (org-set-property "RATING" (read-string "Rating: ")))
+
   (map! :after org
         :map org-mode-map
         :localleader
         (:prefix ("SPC" . "custom")
                  "m" #'my/movie-mark-watched
                  "b" #'my/book-mark-reading
-                 "B" #'my/book-mark-read))
+                 "B" #'my/book-mark-read
+                 "r" #'my/restaurant-mark-visited))
   )
 
 (after! org-modern
