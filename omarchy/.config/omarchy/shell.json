@@ -30,16 +30,16 @@
           "id": "tristonarmstrong.dictionary"
         },
         {
-          "id": "omarchy.clock",
-          "format": "dddd HH:mm",
-          "formatAlt": "d MMMM 'W'ww yyyy",
-          "verticalFormat": "HH\n—\nmm"
-        },
-        {
           "id": "omarchy.keyboard-layout"
         },
         {
           "id": "omarchy.system-update"
+        },
+        {
+          "id": "omarchy.clock",
+          "format": "dddd HH:mm",
+          "formatAlt": "d MMMM 'W'ww yyyy",
+          "verticalFormat": "HH\n—\nmm"
         },
         {
           "id": "omarchy.agents"
@@ -76,10 +76,10 @@
           "id": "omarchy.bluetooth"
         },
         {
-          "id": "omarchy.audio"
+          "id": "omarchy.power"
         },
         {
-          "id": "omarchy.power"
+          "id": "omarchy.audio"
         },
         {
           "id": "jankeesvw.notification-center"

@@ -26,13 +26,16 @@ o.bind("SUPER + B", "Browser", { omarchy = "browser" })
 hl.unbind("SUPER + SHIFT + B")
 o.bind("SUPER + SHIFT + B", "Browser (private)", { omarchy = "browser --private" })
 
-o.bind("SUPER + M", "Music", { launch = "spotify-launcher", focus = "spotify" })
+o.bind("SUPER + M", "Music", { launch = "spotify", focus = "spotify" })
 o.bind("SUPER + D", "Discord", { launch = "discord", focus = "discord" })
 
 o.bind("SUPER + ALT + T", "Activity", { tui = "btop" })
 o.bind("SUPER + SHIFT + T", "Activity", { tui = "btop" })
 
 o.bind("SUPER + E", "Emacs", { launch = "emacs" })
+
+hl.unbind("SUPER + S")
+o.bind("SUPER + S", "Steam", { launch = "steam", focus = "steam" })
 -- ---------------------------------------------------------------------------
 -- Web apps
 -- ---------------------------------------------------------------------------
